@@ -117,8 +117,6 @@ public class ViewRoute {
 		return mav;
 	}
 	
-	
-
 
 	@RequestMapping("/claCouScore")
 	public String claCouScore() {

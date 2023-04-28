@@ -206,8 +206,5 @@ public class GcCourseDeal {
 		return "fail";
 
 	}
-	
-	
-	
-	
+
 }

@@ -8,7 +8,7 @@
 		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
-		inner join course c
+		inner join myscoremanage.course c
 		on c.courseid = ss.courseid
 		where c.coursename = #{0} and ss.type=#{1} and s.stuno like CONCAT(CONCAT('%',#{2},#{3}),'%')
 		limit #{4},#{5}

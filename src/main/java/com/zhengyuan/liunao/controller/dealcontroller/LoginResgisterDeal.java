@@ -44,8 +44,6 @@ public class LoginResgisterDeal {
 	@Autowired
 	TeacherService teacherService;
 	
-	
-
 
 	
     @ResponseBody

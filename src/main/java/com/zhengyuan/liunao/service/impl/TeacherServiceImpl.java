@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhengyuan.liunao.entity.Teacher;
-import com.zhengyuan.liunao.mapper.TeacherMapper;
+import com.zhengyuan.liunao.repository.TeacherMapper;
 import com.zhengyuan.liunao.service.TeacherService;
 
 @Service

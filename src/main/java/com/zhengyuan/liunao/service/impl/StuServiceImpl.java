@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.zhengyuan.liunao.entity.Scores;
 import com.zhengyuan.liunao.entity.Stu;
-import com.zhengyuan.liunao.mapper.StuMapper;
+import com.zhengyuan.liunao.repository.StuMapper;
 import com.zhengyuan.liunao.service.StuService;
 
 @Service

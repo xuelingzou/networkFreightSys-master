@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhengyuan.liunao.mapper.StuMapper">
+<mapper namespace="com.zhengyuan.liunao.repository.StuMapper">
     <select id="findStu" resultType="com.zhengyuan.liunao.entity.Stu">
       select * from myscoremanage.stu where stuno=#{0} and psw=#{1}
     </select>

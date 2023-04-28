@@ -45,7 +45,6 @@ public class LoginResgisterDeal {
 	TeacherService teacherService;
 	
 
-	
     @ResponseBody
 	@RequestMapping(value = "/dealLogin")
 	public String getInfo(@RequestParam(value = "num") String num, @RequestParam(value = "psw") String psw,

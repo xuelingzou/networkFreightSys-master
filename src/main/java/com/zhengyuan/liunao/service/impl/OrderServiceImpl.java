@@ -16,9 +16,7 @@ public class OrderServiceImpl {
     private OrderMapper orderMapper;
 
     // 客户提交订单
-    void submitOrder(String ceid, String senderName, String senderPhone, String departure, String receiveName, String receivePhone, String destination, String cargoType, double weight, double volume) throws ParseException {
-        // 新建order对象
-        Order order = new Order(ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume);
+    void submitOrder(Order order){
         // 对数据库的操作
         orderMapper.addOrder(order);
     }

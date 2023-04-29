@@ -9,12 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Data
-@Entity
 public class Order {
 
-
-    @Id
     int oid;             // 订单id（自增1）
     String ceid;         // 客户id
     String coid;         // 货运公司id

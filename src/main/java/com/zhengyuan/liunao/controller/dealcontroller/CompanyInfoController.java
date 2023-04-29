@@ -83,7 +83,7 @@ public class CompanyInfoController {
 
 	@RequestMapping("/getCompanyByName")
 	@ResponseBody
-	public String getCompanyByName(@RequestParam("coName") String coName, @RequestParam("limit") String limit,
+	public String getCompanyByName(@RequestParam("key[id]") String coName, @RequestParam("limit") String limit,
 			@RequestParam("page") String page) {
 		int lim = Integer.parseInt(limit);
 		int start = (Integer.parseInt(page) - 1) * lim;
@@ -106,7 +106,7 @@ public class CompanyInfoController {
 
 	@RequestMapping("/deleteCompanys")
 	@ResponseBody
-	public String deleteCompanys(@RequestParam("coid") Object coid) {
+	public String deleteCompanys(@RequestParam("nums") Object coid) {
 		String datas = coid.toString();
 		System.out.println(datas);
 		String[] str = datas.split(",");
@@ -125,7 +125,7 @@ public class CompanyInfoController {
 
 	@RequestMapping("/deleteCompany")
 	@ResponseBody
-	public String deleteCompany(@RequestParam("coid") String coid) {
+	public String deleteCompany(@RequestParam("num") String coid) {
 		if (companyService.deleteCompany(coid) > 0) {
 			return "success";
 		} else {
@@ -135,7 +135,7 @@ public class CompanyInfoController {
 
 	@RequestMapping("/getCompanyByNum")
 	@ResponseBody
-	public String getCompanyByNum(@RequestParam("coid") Object coid) {
+	public String getCompanyByNum(@RequestParam("num") Object coid) {
 		String CompanyNo = coid.toString();
 		List<Company> companyList = new ArrayList<>();
 		companyList = companyService.getCompanyByNum(CompanyNo);

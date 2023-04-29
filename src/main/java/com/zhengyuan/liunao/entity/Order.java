@@ -1,5 +1,7 @@
 package com.zhengyuan.liunao.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,8 +9,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Data
 @Entity
 public class Order {
+
+
     @Id
     int oid;             // 订单id（自增1）
     String ceid;         // 客户id
@@ -189,4 +194,30 @@ public class Order {
     public void setReceiveTime(Date receiveTime) {
         this.receiveTime = receiveTime;
     }
+
+//    为了打印对象方便
+@Override
+public String toString() {
+    return "Order{" +
+            "oid=" + oid +
+            ", ceid='" + ceid + '\'' +
+            ", coid='" + coid + '\'' +
+            ", senderName='" + senderName + '\'' +
+            ", senderPhone='" + senderPhone + '\'' +
+            ", departure='" + departure + '\'' +
+            ", receiveName='" + receiveName + '\'' +
+            ", receivePhone='" + receivePhone + '\'' +
+            ", destination='" + destination + '\'' +
+            ", cargoType='" + cargoType + '\'' +
+            ", weight=" + weight +
+            ", volume=" + volume +
+            ", cost=" + cost +
+            ", state='" + state + '\'' +
+            ", submitTime=" + submitTime +
+            ", sendTime=" + sendTime +
+            ", receiveTime=" + receiveTime +
+            '}';
 }
+
+}
+

@@ -48,7 +48,6 @@ public class StuInfoDeal {
 		map.put("pagesize", lim);
 		List<Stu> allStu = stuService.findAllStu(map);
 		int total = stuService.stuCount();
-		
 		Layui l = Layui.data(total, allStu);
 		return JSON.toJSON(l);
 	}

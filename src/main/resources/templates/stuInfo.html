@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh" xmlns:th="http://www.w3.org/1999/xhtml">
   
   <head>
+
     <meta charset="UTF-8">
     <title>欢迎页面-X-admin2.0</title>
     <meta name="renderer" content="webkit">
@@ -49,14 +50,12 @@
        
 
  <div class="demoTable" style="margin-bottom: 20px">
-  搜索姓名：
+  搜索客户名称（模糊查询）：
   <div class="layui-inline">
     <input class="layui-input" name="id" id="demoReload" autocomplete="off">
   </div>
   <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
 </div>   
-
-
 
       </div>
       
@@ -71,10 +70,11 @@
   </body>
   
   <script type="text/html" id="barDemo">
-    <a title="修改信息 "   onclick="stuModi()" href="javascript:;">
+    <a title="修改信息 "   onclick="stuModi()" href="javascript:;" lay-event="edit" >
                 <i class="layui-icon">&#xe642;</i>
               </a>
-              <a title="删除"  onclick="deleteStu()" href="javascript:;" lay-event="edit">
+              <a title="删除"  onclick="deleteStu(ceid)" href="javascript:;" lay-event="del">
+<!--                  lay-event="edit"-->
                 <i class="layui-icon">&#xe640;</i>
               </a>
 </script>
@@ -84,12 +84,15 @@
   <script >
   var documentWidth = $(document).width();
   layui.use('table', function(){
+
+
+
       var table = layui.table;
       table.render({
           elem: '#test'  //绑定table表格
           ,id:'stuInfo'
           ,method:'post'
-          ,url: 'getStuInfo' //后台springmvc接收路径
+          ,url: 'getClientSimpleInfo' //后台springmvc接收路径
           ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
   	        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 	      //,curr: 5 //设定初始在第 5 页
@@ -102,24 +105,77 @@
           ,cols: [
         	  [
              {type: 'checkbox',width:documentWidth*4/100} 
-              ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
-              ,{field:'name', title:'姓名', width:documentWidth*8/100}
-              ,{field:'sex',title:'性别',width:documentWidth*8/100}
-              ,{field:'phone', title:'手机号', width:documentWidth*10/100}
-              ,{field:'qq', title:'qq号', width:documentWidth*10/100}
-              ,{field: 'photo', title: '用户头像',templet:function(d){
-            	     return d.photo == null ? 
-            	  '<a><img src="/Sys/images/defaultUser.png"></a>':
-            		  '<a><img src="../uploads/'+d.photo+'"></a>';
-              },edit: 'file'} 
-              /* ,{field: 'photo', title: '用户头像',templet:'<a><img src="../uploads/{{d.photo}}"></a>'
-            	  ,edit: 'file'} */
+              ,{field:'ceid',title:'客户ID',  sort: true}
+              ,{field:'ceName', title:'客户名称'}
+              ,{field:'phone', title:'手机号'}
               ,{field:'operation',title:'操作',toolbar: '#barDemo'}
           ]
         	  ]
+          // ,where: {
+          //     key:{
+          //        ceName:ceName
+          //     }
+          // }
       });
-    
-      
+
+
+      //工具条事件
+      table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+          var data = obj.data; //获得当前行数据
+          var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+          var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+          var num = data.ceid
+          // alert(data)
+          if(layEvent === 'del'){ //删除
+              layer.confirm('确定删除吗？', function(index){
+                  obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                  layer.close(index);
+
+
+
+                  //向服务端发送删除指令
+                  $.ajax({
+                      url:'deleteClient',
+                      data:{'num':num},
+                      type:'post',
+                      success:function(data){
+                          if(data=="success"){
+                              parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                              location.reload(true);
+                          }else{
+                              parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                          }
+                      }
+                  });
+
+              });
+          } else if(layEvent === 'edit'){ //编辑
+
+              //do something
+              layer.open({
+                  type: 2,
+                  // data:data,
+                  title: '修改页面（若数据为空，则默认保留原来的值）',
+                  skin: 'layui-layer-molv',
+                  shadeClose: false,
+                  shade: 0.8,
+                  area:  ['700px', '450px'],
+                  content: 'stuModi?num='+num,
+                  end: function(){
+                      window.location.reload(); //刷新父页面
+                  }
+              });
+
+              //同步更新缓存对应的值
+              // obj.update({
+              //     username: '123'
+              //     ,title: 'xxx'
+              // });
+          // } else if(layEvent === 'LAYTABLE_TIPS'){
+          //     layer.alert('Hi，请点击图标');
+          }
+      });
+
 	  var $ = layui.$, active = {
     		    reload: function(){
     		      var demoReload = $('#demoReload');
@@ -127,10 +183,10 @@
     		        page: {
     		          curr: 1 //重新从第 1 页开始
     		        },
-    		    url:'getStuByName'
+    		    url:'getClientByName'
     		        ,where: {
     		          key: {
-    		            id: demoReload.val()
+                          id: demoReload.val()
     		          }
     		        }
     		        ,method:'post'
@@ -140,6 +196,8 @@
     		  
     		  $('.demoTable .layui-btn').on('click', function(){
     		    var type = $(this).data('type');
+    		    // alert(type)
+
     		    active[type] ? active[type].call(this) : '';
     		  });	  
   	     		  
@@ -158,13 +216,13 @@
 		}
 		var nums = "";
 		for(var i=0;i<checkStatus.data.length;i++){
-			nums += checkStatus.data[i].stuno+",";
+			nums += checkStatus.data[i].ceid+",";
 		}
 		
 		parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:5000});
 
 		$.ajax({
-			url:'deleteStus',
+			url:'deleteClients',
 			data:{'nums':nums},
 			type:'post',
 			success:function(data){
@@ -179,34 +237,42 @@
       });
       
     }
-  
-  function deleteStu(){
-	  layui.use('table',function(){
-		  var table = layui.table
-		  var checkStatus = table.checkStatus('stuInfo');
-		  var num = checkStatus.data[0].stuno;
-			$.ajax({
-				url:'deleteStu',
-				data:{'num':num},
-				type:'post',
-				success:function(data){
-					if(data=="success"){
-					    parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
-					    location.reload(true);
-					}else{
-				        parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
-			        }
-				}
-			});
-	  }); 
-  }
+
+
+
+  //
+  // function deleteStu(ceid){
+	//   layui.use('table',function(){
+	// 	  var table = layui.table
+	// 	  var checkStatus = table.checkStatus('stuInfo');
+	// 	  alert(ceid)
+  //         if(checkStatus.data.length==0){
+  //             parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+  //             return ;
+  //         }
+	// 	  var num = checkStatus.data[0].ceid;
+	// 		$.ajax({
+	// 			url:'deleteClient',
+	// 			data:{'num':num},
+	// 			type:'post',
+	// 			success:function(data){
+	// 				if(data=="success"){
+	// 				    parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+	// 				    location.reload(true);
+	// 				}else{
+	// 			        parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+	// 		        }
+	// 			}
+	// 		});
+	//   });
+  // }
   
   function stuAdd(){
 	  	
     	layer.open(
                 {
                     type: 2,
-                    title: '增加页面',
+                    title: '新增客户',
                     skin: 'layui-layer-lan',
                     shadeClose: false,
                     shade: 0.8,
@@ -220,26 +286,26 @@
     	 
     }
   
-  function stuModi(){
-	  var num="";
-	  layui.use('table',function(){
-		  var table = layui.table
-		  var checkStatus = table.checkStatus('stuInfo');
-		  num = checkStatus.data[0].stuno;
-	  });
-	  layer.open({
-		  type: 2,
-          title: '修改页面',
-          skin: 'layui-layer-molv',
-          shadeClose: false,
-          shade: 0.8,
-          area:  ['700px', '450px'],
-          content: 'stuModi?num='+num,
-          end: function(){
-          	window.location.reload(); //刷新父页面
-          }
-	  });
-  }
+  // function stuModi(){
+	//   var num="";
+	//   layui.use('table',function(){
+	// 	  var table = layui.table
+	// 	  var checkStatus = table.checkStatus('stuInfo');
+	// 	  num = checkStatus.data[0].ceid;
+	//   });
+	//   layer.open({
+	// 	  type: 2,
+  //         title: '修改页面',
+  //         skin: 'layui-layer-molv',
+  //         shadeClose: false,
+  //         shade: 0.8,
+  //         area:  ['700px', '450px'],
+  //         content: 'updateClient?num='+num,
+  //         end: function(){
+  //         	window.location.reload(); //刷新父页面
+  //         }
+	//   });
+  // }
   
   
   function screen() {
@@ -260,21 +326,21 @@
   
   
   
-  function exportTable(){
-	  location.href="/Sys/export";  
-  }
-  
+  // function exportTable(){
+	//   location.href="/Sys/export";
+  // }
+  //
 
-  layui.use(['form','layer','table','upload'], function(){
-      var table = layui.table
-      ,form = layui.form,upload = layui.upload;
-       var uploadInst = upload.render({
-        elem: '#uploadExcel'
-        , exts: "xls"
-        ,url: '/Sys/ImportStu'
-      });
-
-})
+//   layui.use(['form','layer','table','upload'], function(){
+//       var table = layui.table
+//       ,form = layui.form,upload = layui.upload;
+//        var uploadInst = upload.render({
+//         elem: '#uploadExcel'
+//         , exts: "xls"
+//         ,url: '/Sys/ImportStu'
+//       });
+//
+// })
 
 
 

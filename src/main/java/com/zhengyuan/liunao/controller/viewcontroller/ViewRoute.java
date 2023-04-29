@@ -35,14 +35,14 @@ public class ViewRoute {
 		}
 	}
 	
-	@RequestMapping("/stuIndex")
+	@RequestMapping("/clientIndex")
 	public String stuIndex() {
-		return "stuIndex";
+		return "clientIndex";
 	}
 	
-	@RequestMapping("/teacherIndex")
+	@RequestMapping("/companyIndex")
 	public String teacherIndex() {
-		return "teacherIndex";
+		return "companyIndex";
 	}
 
 	@RequestMapping("/teacherInfo")
@@ -79,9 +79,9 @@ public class ViewRoute {
 	}
 	
 	
-	@RequestMapping("/stuScore")
+	@RequestMapping("/clientOrderSearch")
 	public String stuScore() {
-		return "stuScore";
+		return "clientOrderSearch";
 	}
 
 	/*客户发起新订单*/
@@ -91,9 +91,9 @@ public class ViewRoute {
 	}
 
 
-	@RequestMapping("/teaAdd")
+	@RequestMapping("/companyAdd")
 	public String teaAdd() {
-		return "teaAdd";
+		return "companyAdd";
 	}
 	
 	@RequestMapping("/teacherInfo_mf")

@@ -28,13 +28,13 @@
 
 	<form action="www.baidu.com" class="layui-form" id="myForm">
 		<div class="layui-form layui-form-pane lau-sign-form">
-			<h1 class="lau-sign-title">学生成绩管理系统</h1>
-			<p class="lau-sign-subtitle">by WonderfulMorty</p>
+			<h1 class="lau-sign-title">云上网络货运平台</h1>
+<!--			<p class="lau-sign-subtitle">by WonderfulMorty</p>-->
 			<div class="layui-form-item">
 				<label class="layui-form-label"><i
 					class="iconfont layui-icon-extend-bianhao"></i> 账号</label>
 				<div class="layui-input-block">
-					<input type="text" name="num" placeholder="请输入用户名"
+					<input type="text" name="num" placeholder="请输入账号"
 						autocomplete="off" class="layui-input">
 				</div>
 			</div>
@@ -47,32 +47,44 @@
 				</div>
 			</div>
 
-			<div class="layui-form-item">
 
-				<div class="layui-form-item">
+				<div class="layui-form-item" pane>
 					<label class="layui-form-label" id="myradio"><i
 						class="iconfont layui-icon-extend-ziyuan"></i>身份</label>
-					<div class="layui-input-block">
+					<div class="layui-input-block" >
 						<input type="radio" name="identify" value="0" title="管理员"
-							lay-filter="iden" /> <input type="radio" name="identify"
-							value="1" title="教师" lay-filter="iden" /> <input type="radio"
-							name="identify" value="2" title="学生" lay-filter="iden" />
+							lay-filter="iden" style="margin: 0px 0px 0 0;padding-right: 0;" />
+						<input type="radio" name="identify"
+							value="1" title="货运公司" lay-filter="iden" style="margin: 0 0 0 0;padding-right: 0;"/>
+						<input type="radio"
+							name="identify" value="2" title="客户" lay-filter="iden" style="margin: 0 0 0 0;padding-right: 0;"/>
+
+
+<!--						<div class="layui-unselect layui-form-radio" ><i class="layui-anim layui-icon"></i><div >管理员</div></div>-->
+<!--						<div class="layui-unselect layui-form-radio"><i class="layui-anim layui-icon"></i><div>企业公司</div></div>-->
+<!--						<div class="layui-unselect layui-form-radio" ><i class="layui-anim layui-icon"></i><div>客户</div></div>-->
+
 					</div>
-				</div>
+
 
 			</div>
 			<div class="layui-form-item" id="loginsub">
 				<button type="button" class="layui-btn layui-btn-fluid" lay-submit
-					lay-filter="login">登 入</button>
+					lay-filter="login">登 录</button>
 			</div>
 			<div class="layui-form-item lau-sign-other">
-				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
-				<a href="javascript:;"><i
-					class="layui-icon layui-icon-login-wechat"></i></a> <a
-					href="javascript:;"><i
-					class="layui-icon layui-icon-login-weibo"></i></a> <a
-					onclick="goToRes()" class="lau-sign-reg lau-sign-link"></a>
+<!--				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>-->
+<!--				<a href="javascript:;"><i-->
+<!--					class="layui-icon layui-icon-login-wechat"></i></a> <a-->
+<!--					href="javascript:;"><i-->
+<!--					class="layui-icon layui-icon-login-weibo"></i></a>-->
+				<a onclick="goToRes()" class="lau-sign-reg lau-sign-link">还没有账号？点击这里注册</a>
 			</div>
+
+<!--			<div class="layui-form-item" id="register">-->
+<!--				<button type="button" class="layui-btn layui-btn-fluid"-->
+<!--						onclick="goToRes()" >注 册</button>-->
+<!--			</div>-->
 
 		</div>
 	</form>
@@ -102,9 +114,9 @@
 									if(identify==0){
 										location.href="adminIndex"
 									}else if(identify==1){
-										location.href="teacherIndex"
+										location.href="companyIndex"
 									}else if(identify==2){
-										location.href="stuIndex"
+										location.href="clientIndex"
 									}	
 								});
 							} else {
@@ -179,13 +191,13 @@
 				layer.open(
 		                {
 		                    type: 2,
-		                    title: '增加页面',
+		                    title: '承运商注册',
 		                    skin: 'layui-layer-lan',
 		                    shadeClose: false,
 		                    shade: 0.8,
 		                    area:  ['700px', '450px'],
 		                    resize:true,
-		                    content:'teaAdd',
+		                    content:'companyAdd',
 		                    end: function(){
 		                    	window.location.reload(); //刷新父页面
 		                    }
@@ -195,7 +207,7 @@
 				layer.open(
 		                {
 		                    type: 2,
-		                    title: '增加页面',
+		                    title: '客户注册',
 		                    skin: 'layui-layer-lan',
 		                    shadeClose: false,
 		                    shade: 0.8,

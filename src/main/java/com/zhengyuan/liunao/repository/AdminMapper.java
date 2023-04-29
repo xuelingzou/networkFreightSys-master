@@ -8,5 +8,5 @@ import com.zhengyuan.liunao.entity.Admin;
 
 @Mapper
 public interface AdminMapper {
-	public List<Admin> findAdmin(String account, String psw);
+	List<Admin> findAdmin(String account, String psw);
 }

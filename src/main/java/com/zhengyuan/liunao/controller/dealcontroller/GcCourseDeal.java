@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.ClaScoComp;
 import com.zhengyuan.liunao.entity.Scores;
-import com.zhengyuan.liunao.entity.Teacher;
 import com.zhengyuan.liunao.service.GcCourseService;
 import com.zhengyuan.liunao.tools.CountTool;
 import com.zhengyuan.liunao.tools.Layui;

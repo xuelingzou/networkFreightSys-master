@@ -13,7 +13,6 @@ public class TestSpboot2Application {
 
 	// 用spring 资源加载类 ResourceLoader
 	public static void main(String[] args) {
-		//String version = SpringBootVersion.getVersion();
 		SpringApplication.run(TestSpboot2Application.class, args);
 	}
 

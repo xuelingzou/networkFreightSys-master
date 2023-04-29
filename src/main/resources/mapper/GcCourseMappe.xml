@@ -5,7 +5,7 @@
 
 	<select id="findScores" resultType="com.zhengyuan.liunao.entity.Scores">
 		select
-		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
+		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.company s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
 		inner join myscoremanage.course c
@@ -17,7 +17,7 @@
 	
 	<select id="findAllScores" resultType="com.zhengyuan.liunao.entity.Scores">
 		select
-		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
+		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.company s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
 		inner join myscoremanage.course c
@@ -29,7 +29,7 @@
 	
 	<select id="compClaScores" resultType="com.zhengyuan.liunao.entity.Scores">
 		select
-		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
+		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.company s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
 		inner join myscoremanage.course c
@@ -42,7 +42,7 @@
 	
 		<select id="countScores" resultType="com.zhengyuan.liunao.entity.Scores">
 		select
-		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
+		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.company s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
 		inner join myscoremanage.course c
@@ -72,7 +72,7 @@ where coursename = #{coursename}
 	
 	<select id="findPersonScore" resultType="com.zhengyuan.liunao.entity.Scores">
 			select
-		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.stu s
+		s.stuno,s.name,c.coursename,ss.score,ss.type from myscoremanage.company s
 		inner join myscoremanage.stu_sco ss
 		on ss.stuno=s.stuno
 		inner join myscoremanage.course c

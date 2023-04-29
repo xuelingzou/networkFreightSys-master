@@ -1,6 +1,5 @@
 package com.zhengyuan.liunao.controller.viewcontroller;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -84,8 +83,14 @@ public class ViewRoute {
 	public String stuScore() {
 		return "stuScore";
 	}
-	
-	
+
+	/*客户发起新订单*/
+	@RequestMapping("/clientNewOrder")
+	public String clientNewOrder() {
+		return "clientNewOrder";
+	}
+
+
 	@RequestMapping("/teaAdd")
 	public String teaAdd() {
 		return "teaAdd";
@@ -117,10 +122,16 @@ public class ViewRoute {
 		return mav;
 	}
 	
+	/*公司查看待接的订单*/
+	@RequestMapping("/comOrderSearch")
+	public String comOrderSearch() {
+		return "comOrderSearch";
+	}
 
-	@RequestMapping("/claCouScore")
-	public String claCouScore() {
-		return "claCouScore";
+	/*公司管理已接的订单*/
+	@RequestMapping("/comOrderManage")
+	public String comOrderManage() {
+		return "comOrderManage";
 	}
 
 	@RequestMapping("/ClaCouSco")

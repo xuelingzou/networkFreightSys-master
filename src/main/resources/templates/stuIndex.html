@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>学生成绩管理系统</title>
@@ -56,26 +56,32 @@
 		<div id="side-nav" style="width: 100%;height: 57%">
 			<ul id="nav">
 
-				<li><a href="javascript:;"> <i 
-				class="iconfont">&#xe726;</i>  <cite>学生信息</cite> 
-				<i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li ><a _href="stuInfo_mf"> <i class="iconfont">&#xe6a7;</i>
-								<cite>学生查询</cite>
-						</a></li>
-						
-					</ul></li>
+<!--				<li><a href="javascript:;"> <i -->
+<!--				class="iconfont">&#xe726;</i>  <cite>学生信息</cite> -->
+<!--				<i class="iconfont nav_right">&#xe697;</i>-->
+<!--				</a>-->
+<!--					<ul class="sub-menu">-->
+<!--						<li ><a _href="stuInfo_mf"> <i class="iconfont">&#xe6a7;</i>-->
+<!--								<cite>学生查询</cite>-->
+<!--						</a></li>-->
+<!--						-->
+<!--					</ul></li>-->
 
 
 <li><a href="javascript:;"> <i 
-				class="iconfont">&#xe726;</i>  <cite>成绩单</cite> 
+				class="iconfont">&#xe726;</i>  <cite>订单管理</cite>
 				<i class="iconfont nav_right">&#xe697;</i>
 				</a>
 					<ul class="sub-menu">
-						<li ><a _href="stuScore"> <i class="iconfont">&#xe6a7;</i>
-								<cite>我的成绩单</cite>
+						<!--						发起（提交）订单-->
+						<li ><a _href="clientNewOrder"> <i class="iconfont">&#xe6a7;</i>
+							<cite>发起订单</cite>
 						</a></li>
+
+						<li ><a _href="stuScore"> <i class="iconfont">&#xe6a7;</i>
+								<cite>订单查询</cite>
+						</a></li>
+
 						
 					</ul></li>
 

@@ -1,4 +1,4 @@
-package com.zhengyuan.liunao.mapper;
+package com.zhengyuan.liunao.repository;
 
 import java.util.List;
 import java.util.Map;

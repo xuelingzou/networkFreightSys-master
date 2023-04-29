@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhengyuan.liunao.entity.Admin;
-import com.zhengyuan.liunao.mapper.AdminMapper;
+import com.zhengyuan.liunao.repository.AdminMapper;
 import com.zhengyuan.liunao.service.AdminService;
 
 

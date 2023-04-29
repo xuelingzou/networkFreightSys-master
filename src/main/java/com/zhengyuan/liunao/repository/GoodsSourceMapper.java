@@ -1,4 +1,4 @@
-package com.zhengyuan.liunao.mapper;
+package com.zhengyuan.liunao.repository;
 
 import com.zhengyuan.liunao.entity.GoodSource;
 import org.apache.ibatis.annotations.Mapper;

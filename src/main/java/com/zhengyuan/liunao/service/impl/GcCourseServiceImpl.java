@@ -3,12 +3,11 @@ package com.zhengyuan.liunao.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zhengyuan.liunao.entity.Scores;
-import com.zhengyuan.liunao.mapper.GcCourseMapper;
+import com.zhengyuan.liunao.repository.GcCourseMapper;
 import com.zhengyuan.liunao.service.GcCourseService;
 
 @Service

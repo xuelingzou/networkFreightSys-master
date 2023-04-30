@@ -2,6 +2,7 @@ package com.zhengyuan.liunao.repository;
 
 import com.zhengyuan.liunao.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.aspectj.weaver.ast.Or;
 
 import java.util.Date;
@@ -13,13 +14,13 @@ public interface OrderMapper {
     void addOrder(Order order);
 
     // 货运公司接单————更新order表的coid、state
-    void updateCoidNState(int oid, String coid);
+    void updateCoidNState(@Param("oid") int oid, @Param("coid") String coid);
 
     // 货运公司发货————更新order表的sendTime、state
-    void updateSendTNState(int oid, Date sendTime);
+    void updateSendTNState(@Param("oid") int oid, @Param("sendTime") Date sendTime);
 
     // 货运公司送达————更新order表的state、receiveTime
-    void updateReceiveTNState(int oid, Date receiveTime);
+    void updateReceiveTNState(@Param("oid") int oid, @Param("receiveTime") Date receiveTime);
 
     // 客户界面————展示自己的全部订单
     List<Order> findOrderByCeid(String ceid);

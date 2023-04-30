@@ -173,7 +173,7 @@ public class Order {
 
     public void setSubmitTime() throws ParseException {
         Date now = new Date();
-        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.submitTime = tFormat.parse(tFormat.format(now));
     }
 

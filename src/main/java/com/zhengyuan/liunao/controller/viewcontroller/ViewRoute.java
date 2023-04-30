@@ -34,7 +34,12 @@ public class ViewRoute {
 			return "redirect:/Sys/loginView";
 		}
 	}
-	
+	@RequestMapping("/adminOrderSearch")
+	public String adminOrderSearch() {
+		return "adminOrderSearch";
+	}
+
+
 	@RequestMapping("/clientIndex")
 	public String stuIndex() {
 		return "clientIndex";
@@ -144,15 +149,15 @@ public class ViewRoute {
 		return "ClaCouTea";
 	}
 	
-	@RequestMapping("/parseClaCouSco")
+	@RequestMapping("/incomePie")
 	public String parseClaCouSco() {
-		return "parseClaCouSco";
+		return "incomePie";
 	}
 	
 
-	@RequestMapping("/parseClaComp")
+	@RequestMapping("/incomeBar")
 	public String parseClaComp() {
-		return "parseClaComp";
+		return "incomeBar";
 	}
 	
 	@RequestMapping("/welcome")

@@ -7,6 +7,17 @@ public class Income {
     private String companyID;
     private int yearMonth;
     private double income;
+//    private double money;
+//    private int year;
+
+    public Income(String companyID, int yearMonth, double income) {
+        this.companyID = companyID;
+        this.yearMonth = yearMonth;
+        this.income = income;
+    }
+    public Income(){
+        super();
+    }
 
     public String getCompanyID() {
         return companyID;
@@ -32,10 +43,6 @@ public class Income {
         this.income = income;
     }
 
-    public Income(String companyID, int yearMonth, double income) {
-        this.companyID = companyID;
-        this.yearMonth = yearMonth;
-        this.income = income;
-    }
+
 
 }

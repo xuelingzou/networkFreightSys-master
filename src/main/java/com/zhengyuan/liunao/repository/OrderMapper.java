@@ -29,7 +29,7 @@ public interface OrderMapper {
     List<Order> findOrderByCoid(String coid);
 
     // 货运公司界面————展示全部待接单
-    List<Order> findOrderWaitReceive(String coid);
+    List<Order> findOrderWaitReceive();
 
     // 管理员界面————展示全部订单
     List<Order> showAllOrder();

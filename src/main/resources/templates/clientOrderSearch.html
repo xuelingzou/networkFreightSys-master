@@ -37,10 +37,9 @@
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
-      <xblock >
-        <button type="button" class="layui-btn layui-btn-primary" id="uploadExcel">批量导入</button>
-        <button type="button" class="layui-btn layui-btn-primary" onclick="exportTable()">批量导出</button>
-      </xblock>
+
+
+
   <table id="test" lay-filter="test"></table>
  
   </body>
@@ -52,7 +51,7 @@
           elem: '#test'  //绑定table表格
           ,id:'csInfo'
           ,method:'post'
-          ,url: 'getScoreByStuName' //后台springmvc接收路径
+          ,url: 'findOrderByCeid' //后台springmvc接收路径
           ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
   	        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 	      //,curr: 5 //设定初始在第 5 页
@@ -64,12 +63,24 @@
 	    }
           ,cols: [
         	  [
-             {type: 'checkbox',width:documentWidth*4/100} 
-              ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
-              ,{field:'name',title:'姓名', width:documentWidth*8/100,sort:true}
-              ,{field:'coursename',title:'学科',width:documentWidth*8/100,sort:true}
-              ,{field:'score',edit: 'text',title:'成绩',width:documentWidth*8/100,sort:true}
-              ,{field:'type',edit: 'text',title:'类型',width:documentWidth*8/100,sort:true}
+             {type: 'checkbox',width:documentWidth*4/100,fixed: 'left',}
+              ,{field:'oid',title:'订单ID', sort: true}
+              ,{field:'senderName',title:'发件⼈名', sort:true}
+              ,{field:'senderPhone',title:'发件⼈电话',sort:true}
+              ,{field:'departure',title:'发件地址',sort:true}
+              ,{field:'receiveName',title:'收件⼈名',sort:true}
+                ,{field:'receiveName',title:'收件⼈名',sort:true}
+                ,{field:'receivePhone',title:'收件⼈电话',sort:true}
+                ,{field:'destination',title:'收件地址',sort:true}
+                ,{field:'cargoType',title:'货物种类',sort:true}
+                ,{field:'weight',title:'货物重量',sort:true}
+                ,{field:'volume',title:'货物体积',sort:true}
+                ,{field:'cost',title:'运费',sort:true}
+                ,{field:'state',title:'状态',sort:true}
+                ,{field:'submitTime',title:'提交订单时间',sort:true}
+                ,{field:'sendTime',title:'发货时间',sort:true}
+                ,{field:'receiveTime',title:'到达时间',sort:true}
+
           ]
         	  ]
          
@@ -80,6 +91,8 @@
  		    active[type] ? active[type].call(this) : '';
  		  });	     		  
  		});
+
+
 </script>  
   
 </html>

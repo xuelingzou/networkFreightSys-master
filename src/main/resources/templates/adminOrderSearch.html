@@ -43,29 +43,18 @@
 <table id="test" lay-filter="test"></table>
 
 </body>
-<script type="text/html" id="barDemo">
 
-    {{#  if(d.state ==="已接单"){    }}
-    <a class="layui-btn layui-btn-xs" lay-event="send">发货</a>
-    {{#   } else if(d.state ==="已发货"){  }}
-    <a class="layui-btn layui-btn-xs" lay-event="finish">送达</a>
-    {{#    } else if(d.state ==="已到达"){    }}
-        完成
-    {{#    }   }}
-
-</script>
 
 
 <script >
     var documentWidth = $(document).width();
-    layui.use(['table','form',"laytpl"],function(){
-        const table = layui.table;
-        const laytpl = layui.laytpl;
+    layui.use(['table','form'],function(){
+        var table = layui.table;
         table.render({
             elem: '#test'  //绑定table表格
             ,id:'csInfo'
             ,method:'post'
-            ,url: 'findOrderByCoid' //后台springmvc接收路径
+            ,url: 'showAllOrder' //后台springmvc接收路径
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
@@ -94,68 +83,12 @@
                     ,{field:'submitTime',title:'提交订单时间',sort:true}
                     ,{field:'sendTime',title:'发货时间',sort:true}
                     ,{field:'receiveTime',title:'到达时间',sort:true}
-                    ,{fixed: 'right',  align:'center', toolbar: '#barDemo'}
+
 
                 ]
             ]
-        }); //table
 
-        //工具条事件
-        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            const data = obj.data; //获得当前行数据
-            const layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-            const tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
-
-            const oid =  data.oid
-
-            if(layEvent === 'send'){ //发货
-
-                layer.confirm('是否确定发货？', function(index){
-                    //向服务端发送发货指令
-                    $.ajax({
-                        url:'sendCargo',
-                        data:{'oid':oid},
-                        type:'post',
-                        success:function(data){
-                            if(data==="发货成功"){
-                                parent.layer.msg('发货成功！', {icon: 1,time:2000,shade:0.2});
-                                window.location.reload(true);
-                            }else{
-                                parent.layer.msg('发货失败，请稍后尝试！', {icon: 2,time:3000,shade:0.2});
-                            }
-                        }
-                    });//ajax
-                });//layer.confirm
-            } else if (layEvent === 'finish'){//送达
-                layer.confirm('是否确定货物已送达？', function(index){
-
-                    //向服务端发送送达指令
-                    $.ajax({
-                        url:'receiveCargo',
-                        data:{'oid':oid},
-                        type:'post',
-                        success:function(data){
-                            if(data==="货物已送达"){
-                                parent.layer.msg('货物已送达！', {icon: 1,time:2000,shade:0.2});
-                                window.location.reload(true);
-                            }else{
-                                parent.layer.msg('货物送达失败，请稍后尝试！', {icon: 2,time:3000,shade:0.2});
-                            }
-                        }
-                    });//ajax
-
-                });//layer.confirm
-            }
-
-            var d = {
-                state:data.state
-            }
-            const barDemo = document.getElementById('barDemo');
-            const getTpl = barDemo.innerHTML
-            laytpl(getTpl).render(d);
-
-        });//工具条事件
-
+        });
 
 
         $('.layui-btn').on('click', function(){

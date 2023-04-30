@@ -53,10 +53,13 @@ public class OrderController {
     }
 
     // 货运公司接单
+    @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/receiveOrder")
     public String receiveOrder(@RequestParam("oid") int oid, HttpSession httpSession){
         // 获取当前货运公司的coid
         String coid = (String) httpSession.getAttribute( "account");
+        System.out.println("coid:"+coid);
+        System.out.println("oid:"+oid);
         // 对数据库的操作：更改数据库中该条order的状态，设定关联货运公司
         orderMapper.updateCoidNState(oid, coid);
 
@@ -76,6 +79,7 @@ public class OrderController {
     }
 
     // 货运公司发货
+    @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/sendCargo")
     public String sendCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -88,6 +92,7 @@ public class OrderController {
     }
 
     // 货运公司送达
+    @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/receiveCargo")
     public String receiveCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -124,6 +129,7 @@ public class OrderController {
             map.put("state",order.getState());
             if(order.getSubmitTime()!=null){
                 map.put("submitTime",dateformat.format(order.getSubmitTime()));
+//                System.out.println("submitTime type:"+dateformat.format(order.getSubmitTime()).getClass().getName());
             }else{
                 map.put("submitTime","");
             }

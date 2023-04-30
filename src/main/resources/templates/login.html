@@ -112,7 +112,7 @@
 						type : 'POST',
 						success : function(data) {
 							if (data !== "fail") {
-								layer.msg("登录成功！！！", function() {
+								// layer.msg("登录成功！！！", function() {
 									if(identify ==='0'){
 										location.href="adminIndex"
 									}else if(identify === '1'){
@@ -120,7 +120,7 @@
 									}else if(identify === '2'){
 										location.href="clientIndex"
 									}	
-								});
+								// });//layer.msg
 							} else {
 								layui.use('layer', function() {
 									var layer = layui.layer;

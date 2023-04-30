@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootTest
@@ -44,9 +45,23 @@ public class IncomeMapperTest extends TestCase {
 
     @Test
     public void testFindByYearMonth() {
+        // 成功根据年月查找income对应公司月收入测试用例
+        List<Income> list = incomeMapper.findByYearMonth("123456",202304);
+        assertEquals(1,list.size());
+
+        // 失败根据年月查找income对应公司月收入测试用例（因为原公司id不存在999）
+        List<Income> list1 = incomeMapper.findByYearMonth("999",202304);
+        assertEquals(0,list1.size());
     }
 
     @Test
     public void testSelectMonthIncome() {
+        // 成功根据年查找income对应公司月收入列表测试用例
+        List<Income> list = incomeMapper.selectMonthIncome("123456",2023*100);
+        assertEquals(2,list.size());
+
+        // 失败根据年查找income对应公司月收入列表测试用例（因为原公司id不存在999）
+        List<Income> list1 = incomeMapper.selectMonthIncome("999",2023*100);
+        assertEquals(0,list1.size());
     }
 }

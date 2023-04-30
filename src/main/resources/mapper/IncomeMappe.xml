@@ -4,7 +4,7 @@
 <mapper namespace="com.zhengyuan.liunao.repository.IncomeMapper">
 
 	<update id="updateIncome" parameterType="com.zhengyuan.liunao.entity.Income">
-		update myscoremanage. income set income = income+#{income}
+		update myscoremanage. income set income = income+#{money}
 		where companyID = #{companyID} and yearMonth = #{yearMonth}
 	</update>
 	<update id="insertIncome" parameterType="com.zhengyuan.liunao.entity.Income">

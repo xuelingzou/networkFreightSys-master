@@ -150,19 +150,76 @@ public class OrderController {
     public String findOrderByCoid(HttpSession httpSession){
         String coid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCoid(coid);
-        int total = orders.size();
-        Layui l = Layui.data(total,orders);
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
+        for(Order order:orders){
+            Map<String,String> map = new HashMap<>();
+            map.put("oid",String.valueOf(order.getOid()));
+            map.put("ceid",order.getCeid());
+            map.put("senderName",order.getSenderName());
+            map.put("senderPhone",order.getSenderPhone());
+            map.put("departure",order.getDeparture());
+            map.put("receiveName",order.getReceiveName());
+            map.put("receivePhone",order.getReceivePhone());
+            map.put("destination",order.getDestination());
+            map.put("cargoType",order.getCargoType());
+            map.put("weight",String.valueOf(order.getWeight()));
+            map.put("volume",String.valueOf(order.getVolume()));
+            map.put("cost",String.valueOf(order.getCost()));
+            map.put("state",order.getState());
+            if(order.getSubmitTime()!=null){
+                map.put("submitTime",dateformat.format(order.getSubmitTime()));
+            }else{
+                map.put("submitTime","");
+            }
+            if(order.getSendTime()!=null){
+                map.put("sendTime",dateformat.format(order.getSendTime()));
+            }else{
+                map.put("sendTime","");
+            }
+            if(order.getReceiveTime()!=null){
+                map.put("receiveTime",dateformat.format(order.getReceiveTime()));
+            }else{
+                map.put("receiveTime","");
+            }
+            list.add(map);
+        }
+        int total = list.size();
+        Layui l = Layui.data(total,list);
         return JSON.toJSONString(l);
     }
 
     // 货运公司界面————展示全部待接单
     @RequestMapping("/findOrderWaitReceive")
     @ResponseBody
-    public String findOrderWaitReceive(HttpSession httpSession){
-        String coid = (String) httpSession.getAttribute( "account");
-        List<Order> orders = orderMapper.findOrderWaitReceive(coid);
-        int total = orders.size();
-        Layui l = Layui.data(total,orders);
+    public String findOrderWaitReceive(){
+        List<Order> orders = orderMapper.findOrderWaitReceive();
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
+        for(Order order:orders){
+            Map<String,String> map = new HashMap<>();
+            map.put("oid",String.valueOf(order.getOid()));
+            map.put("ceid",order.getCeid());
+            map.put("senderName",order.getSenderName());
+            map.put("senderPhone",order.getSenderPhone());
+            map.put("departure",order.getDeparture());
+            map.put("receiveName",order.getReceiveName());
+            map.put("receivePhone",order.getReceivePhone());
+            map.put("destination",order.getDestination());
+            map.put("cargoType",order.getCargoType());
+            map.put("weight",String.valueOf(order.getWeight()));
+            map.put("volume",String.valueOf(order.getVolume()));
+            map.put("cost",String.valueOf(order.getCost()));
+            map.put("state",order.getState());
+            if(order.getSubmitTime()!=null){
+                map.put("submitTime",dateformat.format(order.getSubmitTime()));
+            }else{
+                map.put("submitTime","");
+            }
+            list.add(map);
+        }
+        int total = list.size();
+        Layui l = Layui.data(total,list);
         return JSON.toJSONString(l);
     }
 
@@ -171,8 +228,43 @@ public class OrderController {
     @ResponseBody
     public String showAllOrder(){
         List<Order> orders = orderMapper.showAllOrder();
-        int total = orders.size();
-        Layui l = Layui.data(total,orders);
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
+        for(Order order:orders){
+            Map<String,String> map = new HashMap<>();
+            map.put("oid",String.valueOf(order.getOid()));
+            map.put("ceid",order.getCeid());
+            map.put("coid",order.getCoid());
+            map.put("senderName",order.getSenderName());
+            map.put("senderPhone",order.getSenderPhone());
+            map.put("departure",order.getDeparture());
+            map.put("receiveName",order.getReceiveName());
+            map.put("receivePhone",order.getReceivePhone());
+            map.put("destination",order.getDestination());
+            map.put("cargoType",order.getCargoType());
+            map.put("weight",String.valueOf(order.getWeight()));
+            map.put("volume",String.valueOf(order.getVolume()));
+            map.put("cost",String.valueOf(order.getCost()));
+            map.put("state",order.getState());
+            if(order.getSubmitTime()!=null){
+                map.put("submitTime",dateformat.format(order.getSubmitTime()));
+            }else{
+                map.put("submitTime","");
+            }
+            if(order.getSendTime()!=null){
+                map.put("sendTime",dateformat.format(order.getSendTime()));
+            }else{
+                map.put("sendTime","");
+            }
+            if(order.getReceiveTime()!=null){
+                map.put("receiveTime",dateformat.format(order.getReceiveTime()));
+            }else{
+                map.put("receiveTime","");
+            }
+            list.add(map);
+        }
+        int total = list.size();
+        Layui l = Layui.data(total,list);
         return JSON.toJSONString(l);
     }
 

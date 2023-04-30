@@ -1,16 +1,15 @@
 package com.zhengyuan.liunao.controller.dealcontroller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
 import com.zhengyuan.liunao.service.impl.OrderServiceImpl;
 import com.zhengyuan.liunao.tools.Id;
+import com.zhengyuan.liunao.tools.Layui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -18,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -30,32 +30,42 @@ public class OrderController {
     // 客户提交订单
     @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/addOrder")
-    public String submitOrder(String senderName, String senderPhone, String departure, String receiveName, String receivePhone, String destination, String cargoType, double weight, double volume) throws ParseException {
-        // 获取当前客户的ceid
-        String ceid = Id.getCeid();
-        // 新建order对象
-        Order order = new Order(ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume);
+    public String submitOrder(@RequestBody Order order) throws ParseException {
+//        String senderName = map.get("senderName");
+//        String senderPhone = map.get("senderPhone");
+//        String departure = map.get("departure");
+//        String receiveName = map.get("receiveName");
+//        String receivePhone = map.get("receivePhone");
+//        String destination = map.get("destination");
+//        String cargoType = map.get("cargoType");
+//        double weight = Double.parseDouble(map.get("weight"));
+//        double volume = Double.parseDouble(map.get("volume"));
+//        // 获取当前客户的ceid
+//        String ceid = map.get("ceid");
+//        // 新建order对象
+//        Order order = new Order(ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume);
         // 对数据库的操作
         orderMapper.addOrder(order);
         return "提交订单成功";
     }
 
     // 货运公司接单
-    @PostMapping("receiveOrder")
-    public String receiveOrder(int oid){
+    @PostMapping("/receiveOrder")
+    public String receiveOrder(@RequestBody Map<String,String> map){
+        int oid = Integer.parseInt(map.get("oid"));
         // 获取当前货运公司的coid
-        String coid = Id.getCoid();
+        String coid = map.get("coid");
         // 对数据库的操作：更改数据库中该条order的状态，设定关联货运公司
         orderMapper.updateCoidNState(oid, coid);
         return "接单成功";
     }
 
     // 货运公司发货
-    @PostMapping("sendCargo")
-    public String sendCargo(int oid) throws ParseException {
+    @PostMapping("/sendCargo")
+    public String sendCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
         Date now = new Date();
-        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date sendTime = tFormat.parse(tFormat.format(now));
         // 修改数据库对应数据
         orderMapper.updateSendTNState(oid, sendTime);
@@ -63,11 +73,11 @@ public class OrderController {
     }
 
     // 货运公司送达
-    @PostMapping("receiveCargo")
-    public String receiveCargo(int oid) throws ParseException {
+    @PostMapping("/receiveCargo")
+    public String receiveCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
         Date now = new Date();
-        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date receiveTime = tFormat.parse(tFormat.format(now));
         // 修改数据库对应数据
         orderMapper.updateSendTNState(oid, receiveTime);
@@ -75,34 +85,43 @@ public class OrderController {
     }
 
     // 客户界面————展示自己的全部订单
-    @PostMapping("findOrderByCeid")
-    List<Order> findOrderByCeid(){
-        String ceid = Id.getCeid();
+    @RequestMapping("/findOrderByCeid")
+    @ResponseBody
+    public String findOrderByCeid(@RequestParam("ceid") String ceid){
         List<Order> orders = orderMapper.findOrderByCeid(ceid);
-        return orders;
+        int total = orders.size();
+        Layui l = Layui.data(total,orders);
+        return JSON.toJSONString(l);
     }
 
     // 货运公司界面————展示自己的全部订单
-    @PostMapping("findOrderByCoid")
-    List<Order> findOrderByCoid(){
-        String coid = Id.getCoid();
+    @RequestMapping("/findOrderByCoid")
+    @ResponseBody
+    public String findOrderByCoid(@RequestParam("coid") String coid){
         List<Order> orders = orderMapper.findOrderByCoid(coid);
-        return orders;
+        int total = orders.size();
+        Layui l = Layui.data(total,orders);
+        return JSON.toJSONString(l);
     }
 
     // 货运公司界面————展示全部待接单
-    @PostMapping("findOrderWaitReceive")
-    List<Order> findOrderWaitReceive(){
-        String coid = Id.getCoid();
+    @RequestMapping("/findOrderWaitReceive")
+    @ResponseBody
+    public String findOrderWaitReceive(@RequestParam("coid") String coid){
         List<Order> orders = orderMapper.findOrderWaitReceive(coid);
-        return orders;
+        int total = orders.size();
+        Layui l = Layui.data(total,orders);
+        return JSON.toJSONString(l);
     }
 
     // 管理员界面————展示全部订单
-    @PostMapping("showAllOrder")
-    List<Order> showAllOrder(){
+    @RequestMapping("/showAllOrder")
+    @ResponseBody
+    public String showAllOrder(){
         List<Order> orders = orderMapper.showAllOrder();
-        return orders;
+        int total = orders.size();
+        Layui l = Layui.data(total,orders);
+        return JSON.toJSONString(l);
     }
 
 }

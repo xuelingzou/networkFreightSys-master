@@ -34,14 +34,16 @@ public class FinanceController {
 		for(Income income:incomes){
 			map.put(String.valueOf(income.getYearMonth()),income.getIncome());
 		}
-		
-		List<Float>sc1 = new ArrayList<>();
-		List<Float>sc2 = new ArrayList<>();
-		List<Float>sc3 = new ArrayList<>();
+
 
 	    double[] scores = new double[12];
 		for(int i=0;i<12;i++){
-			scores[i] = map.get(String.valueOf(year*100+i+1));
+			if(map.get(String.valueOf(year*100+i+1))!=null){
+				scores[i] = map.get(String.valueOf(year*100+i+1));
+			}else{
+				scores[i] = 0;
+			}
+
 		}
 
 	    String jsonString = JSON.toJSONString(scores);

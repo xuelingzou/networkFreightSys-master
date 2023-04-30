@@ -34,7 +34,7 @@
         where oid=#{oid};
     </select>
     <select id="findOrderWaitReceive" resultType="com.zhengyuan.liunao.entity.Order">
-        elect * from myscoremanage. order
+        select * from myscoremanage.order
         where state="待接单";
     </select>
     <select id="showAllOrder" resultType="com.zhengyuan.liunao.entity.Order">

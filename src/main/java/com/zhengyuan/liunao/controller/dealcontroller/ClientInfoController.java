@@ -136,8 +136,11 @@ public class ClientInfoController {
 	public String updateClient(@RequestBody Map<String,String> map) {
 		System.out.println("Client psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
-		clientService.updateClient(map);
-		return "";
+		if(clientService.updateClient(map)>0){
+			return "success";
+		}else{
+			return "fail";
+		}
 
 	}
 	@ApiOperation("多选删除客户信息")

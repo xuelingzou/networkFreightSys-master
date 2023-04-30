@@ -151,9 +151,11 @@ public class CompanyInfoController {
 	public String updateCompany(@RequestBody Map<String,String> map) {
 		System.out.println("Company psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
-		companyService.updateCompany(map);
-		return "success";
-
+		if(companyService.updateCompany(map)>0){
+			return "success";
+		}else{
+			return "fail";
+		}
 	}
 
 

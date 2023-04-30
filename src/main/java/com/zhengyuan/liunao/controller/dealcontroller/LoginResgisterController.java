@@ -23,7 +23,7 @@ import com.zhengyuan.liunao.service.ClientService;
 import cn.hutool.crypto.SecureUtil;
 
 @Controller
-@RequestMapping("/Sys")
+@RequestMapping("/v1")
 public class LoginResgisterController {
 
 	@Autowired
@@ -68,7 +68,7 @@ public class LoginResgisterController {
 				dataJson = JSON.toJSONString(clientList);
 
 
-				return dataJson; //不知道返回数据过去干嘛的
+				return dataJson;
 			}
 		} else if (Integer.parseInt(identify) == 1) { //承运商
 			List<Company> companyList = new ArrayList<>();

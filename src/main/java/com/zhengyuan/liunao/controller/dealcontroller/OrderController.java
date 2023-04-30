@@ -19,7 +19,7 @@ import java.util.*;
 
 
 @Controller
-@RequestMapping("/Sys")
+@RequestMapping("/v1")
 public class OrderController {
 
     @Autowired
@@ -48,11 +48,16 @@ public class OrderController {
         String ceid = (String) httpSession.getAttribute( "account");
         order.setCeid(ceid); //客户id
         order.setCost(order.getWeight(),order.getVolume());
-        orderMapper.addOrder(order);
-        return "提交订单成功";
+        if(orderMapper.addOrder(order)>0){
+            return "提交订单成功";
+        }else{
+            return "提交订单失败";
+        }
+
     }
 
     // 货运公司接单
+    @ResponseBody
     @PostMapping("/receiveOrder")
     public String receiveOrder(@RequestParam("oid") int oid, HttpSession httpSession){
         // 获取当前货运公司的coid
@@ -76,6 +81,7 @@ public class OrderController {
     }
 
     // 货运公司发货
+    @ResponseBody
     @PostMapping("/sendCargo")
     public String sendCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -88,6 +94,7 @@ public class OrderController {
     }
 
     // 货运公司送达
+    @ResponseBody
     @PostMapping("/receiveCargo")
     public String receiveCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -102,8 +109,8 @@ public class OrderController {
     // 客户界面————展示自己的全部订单
     @RequestMapping("/findOrderByCeid")
     @ResponseBody
-    public String findOrderByCeid(HttpSession httpSession){
-        String ceid = (String) httpSession.getAttribute( "account");
+    public String findOrderByCeid(@RequestParam("ceid") String ceid){
+        //String ceid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCeid(ceid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -147,8 +154,8 @@ public class OrderController {
     // 货运公司界面————展示自己的全部订单
     @RequestMapping("/findOrderByCoid")
     @ResponseBody
-    public String findOrderByCoid(HttpSession httpSession){
-        String coid = (String) httpSession.getAttribute( "account");
+    public String findOrderByCoid(@RequestParam("coid") String coid){
+        //String coid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCoid(coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");

@@ -49,8 +49,10 @@ public class Order {
         setSubmitTime();            // 提交时间系统自动生成
     }
 
-    public Order() {
+    public Order() throws ParseException{
 
+        setState("待接单");
+        setSubmitTime();
     }
 
     public int getOid() {

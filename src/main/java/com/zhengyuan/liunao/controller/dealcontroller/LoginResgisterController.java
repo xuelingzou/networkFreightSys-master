@@ -42,7 +42,7 @@ public class LoginResgisterController {
 			@RequestParam(value = "identify") String identify, HttpSession httpSession) {
 
 		String dataJson = "fail";
-		if (Integer.parseInt(identify) == 0) {
+		if (Integer.parseInt(identify) == 0) { //管理员
 			List<Admin> adminList = new ArrayList<>();
 			adminList = adminService.findAdmin(num, SecureUtil.md5(psw));
 			if (adminList.size() > 0) {
@@ -55,19 +55,22 @@ public class LoginResgisterController {
 				dataJson = JSON.toJSONString(adminList);
 				return dataJson;
 			}
-		} else if (Integer.parseInt(identify) == 1) {
+		} else if (Integer.parseInt(identify) == 2) { //客户
 			List<Client> clientList = new ArrayList<>();
 			clientList = clientService.findClient(num, SecureUtil.md5(psw));
 			if (clientList.size() > 0) {
+//				使用httpSession来记录当前在线用户，之后从controller参数中获取HttpSession 对象，使用get方法获取属性值
 				String name = clientList.get(0).getCeName();
 				String account = clientList.get(0).getCeid();
 				httpSession.setAttribute("account", account);
 				httpSession.setAttribute("name", name);
 				httpSession.setAttribute("role", "client");
 				dataJson = JSON.toJSONString(clientList);
-				return dataJson;
+
+
+				return dataJson; //不知道返回数据过去干嘛的
 			}
-		} else if (Integer.parseInt(identify) == 2) {
+		} else if (Integer.parseInt(identify) == 1) { //承运商
 			List<Company> companyList = new ArrayList<>();
 			companyList = companyService.findCompany(num, SecureUtil.md5(psw));
 			if (companyList.size() > 0) {
@@ -77,6 +80,8 @@ public class LoginResgisterController {
 				httpSession.setAttribute("name", name);
 				httpSession.setAttribute("role", "company");
 				dataJson = JSON.toJSONString(companyList);
+
+
 				return dataJson;
 			}
 		}

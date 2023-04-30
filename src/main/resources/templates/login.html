@@ -55,7 +55,7 @@
 						<input type="radio" name="identify" value="0" title="管理员"
 							lay-filter="iden" style="margin: 0px 0px 0 0;padding-right: 0;" />
 						<input type="radio" name="identify"
-							value="1" title="货运公司" lay-filter="iden" style="margin: 0 0 0 0;padding-right: 0;"/>
+							value="1" title="承运商" lay-filter="iden" style="margin: 0 0 0 0;padding-right: 0;"/>
 						<input type="radio"
 							name="identify" value="2" title="客户" lay-filter="iden" style="margin: 0 0 0 0;padding-right: 0;"/>
 
@@ -102,20 +102,22 @@
 			form.on('submit(login)', function(data) {
 				var loginjson = JSON.stringify(data.field);
 				var logindata = JSON.parse(loginjson);
-				var identify = logindata.identify;
-				if (identify == 0 || identify == 1 || identify == 2) {
+				var identify = logindata.identify
+				// alert(identify)
+
+				if (identify === '0' || identify === '1' || identify === '2') {
 					$.ajax({
 						url : "dealLogin",
 						data : logindata,
 						type : 'POST',
 						success : function(data) {
-							if (data != "fail") {
+							if (data !== "fail") {
 								layer.msg("登录成功！！！", function() {
-									if(identify==0){
+									if(identify ==='0'){
 										location.href="adminIndex"
-									}else if(identify==1){
+									}else if(identify === '1'){
 										location.href="companyIndex"
-									}else if(identify==2){
+									}else if(identify === '2'){
 										location.href="clientIndex"
 									}	
 								});
@@ -167,7 +169,7 @@
 
 		layui.use('layer', function() {
 			var layer = layui.layer;
-			if (idendata == null || idendata == "") {
+			if (idendata == null || idendata === "") {
 				layer.open({
 					type : 4,
 					content : [ "没有选择身份", "#myradio" ],
@@ -177,7 +179,7 @@
 					time : 2000,
 				})
 
-			} else if (idendata == 0) {
+			} else if (idendata === '0') {
 				layer.open({
 					type : 4,
 					content : [ "管理员不能被注册", "#myradio" ],
@@ -187,7 +189,7 @@
 					time : 2000,
 				});
 			}
-			else if (idendata == 1){
+			else if (idendata === '1'){
 				layer.open(
 		                {
 		                    type: 2,
@@ -203,7 +205,7 @@
 		                    }
 		                });
 			}
-			else if (idendata == 2){
+			else if (idendata === '2'){
 				layer.open(
 		                {
 		                    type: 2,

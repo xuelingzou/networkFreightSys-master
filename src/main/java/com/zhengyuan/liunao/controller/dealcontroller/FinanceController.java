@@ -38,7 +38,12 @@ public class FinanceController {
 
 	    double[] scores = new double[12];
 		for(int i=0;i<12;i++){
-			scores[i] = map.get(String.valueOf(year*100+i+1));
+			if(map.get(String.valueOf(year*100+i+1)) !=null){
+				scores[i] = map.get(String.valueOf(year*100+i+1));
+			}else {
+				scores[i] =0;
+			}
+
 		}
 
 	    String jsonString = JSON.toJSONString(scores);

@@ -32,6 +32,7 @@
 			href="javascript:location.replace(location.href);" title="刷新"> <i
 			class="layui-icon" style="line-height: 30px">ဂ</i></a>
 	</div>
+
 	<div class="x-body">
 		<div class="layui-row">
 
@@ -48,12 +49,15 @@
 <!--					</select>-->
 <!--				</div>-->
 
-
-
-				<div class="layui-inline"> <!-- 注意：这一层元素并不是必须的 -->
-					<label for="test1">选择年份</label>
-					<input type="text" class="layui-input" id="test1">
+				<div class="demoTable" style="margin-bottom: 20px">
+					年份：
+					<div class="layui-inline">
+						<input class="layui-input" name="id" id="demoReload" autocomplete="off">
+					</div>
+					<button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
 				</div>
+
+
 
 
 
@@ -71,17 +75,17 @@
 
 
 
-<script type="text/javascript" src="/Sys/js/lay/modules/laydate.js">
+<script type="text/javascript" >
 	// var grade = "2016";
 	// var coursename = "java";
-	let year = '';
+	let year = '2023';
 
 	var chart = document.getElementById('main');
 	var echart = echarts.init(chart);
 
 
 	//生成图形
-	function buildChart(columLabel, columName, columnValue) {
+	function buildChart(columName, columnValue) {
 		var option = {
 			tooltip : {
 				trigger : 'axis',
@@ -98,7 +102,7 @@
 				}
 			},
 			legend : {
-				data : columLabel
+				data : [year+"年月收入"]
 			},
 			grid : {
 				left : '3%',
@@ -107,6 +111,14 @@
 				containLabel : true
 			},
 			xAxis : [ {
+				length: 12,
+				axisTick: {
+					alignWithLabel: true,
+					interval :'0'
+				},
+				axisLabel:{
+					show : true
+				},
 				min : 0,
 				type : 'category',
 				data : columName
@@ -115,64 +127,122 @@
 				min : 0,
 				type : 'value'
 			} ],
-			series : columnValue
+			series: [{
+				name: year+"年月收入",
+				type: 'bar',
+				data: columnValue,
+				itemStyle: {
+					normal: {
+						label: {
+							show: true,
+							position: 'top'
+						}
+					}
+				}
+
+
+			}]
+			// series : columnValue
+				// itemStyle: {
+				// 	normal: {
+				// 		label: {
+				// 			show: true,
+				// 			position: 'top'
+				// 		}
+				// 	}
+				// }
+			// }
 	};
 	
-	echart.setOption(option);
+	echart.setOption(option,true);
 }
 
+	$.ajax({
+		type: "post",
+		async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+		url: "getGscomp", //请求发送到TestServlet处
+		data: {
+			"year": year,
+
+		},
+		dataType: "json", //返回数据形式为json
+		success: function (result) {
+
+			var columName = ['一月', '二月', '三月', "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+			// var columnValue = new Array();
+			const columnValue = result;
+
+			// for (var i = 0; i < columName.length; i++) {
+			//
+			//
+			// 	console.info(eval('('
+			// 			+ ("{'name':'" + columName[i]
+			// 					+ "','type':'bar','data':[" + result[i] + "]}")
+			// 			+ ')'))
+			// 	columnValue.push(eval('('
+			// 			+ ("{'name':'" + columName[i]
+			// 					+ "','type':'bar','data':[" + result[i] + "]}")
+			// 			+ ')'));
+			//
+			// }
+
+
+			buildChart(columName, columnValue);
+
+		},
+		error: function (errorMsg) {
+			//请求失败时执行该函数
+			alert("图表请求数据失败!");
+			echart.hideLoading();
+		}
+	});
 
 
 
-	layui.use([ 'table', "laydate"], function() {
+	layui.use([ 'table'], function() {
 		// var form = layui.form;
-		const laydate = layui.laydate;
+		// const laydate = layui.laydate;
 
-		//执行一个laydate实例
-		laydate.render({
-			elem: '#test1' //指定元素
-			,type: 'year',
-			done: function(value, date, endDate){
-				year = value;
-				console.log(value); //得到日期生成的值，如：2017-08-18
-				console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-				console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-			},functions(){
+
+		//根据名称查询
+		const $ = layui.$, active = {
+			reload: function () {
+				year = $('#demoReload').val();
 
 				$.ajax({
-					type : "post",
-					async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-					url : "getGscomp", //请求发送到TestServlet处
-					data : {
-						"year" : year,
+					type: "post",
+					async: true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+					url: "getGscomp", //请求发送到TestServlet处
+					data: {
+						"year": year,
 
 					},
-					dataType : "json", //返回数据形式为json
-					success : function(result) {
-						var columLabel = [ '月收入' ];
-						var columName = [ '一月', '二月', '三月',"四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-						var columnValue = new Array();
+					dataType: "json", //返回数据形式为json
+					success: function (result) {
 
-						for (var i = 0; i < columName.length; i++) {
-							for (var j = 0; j < columLabel.length; j++) {
+						var columName = ['一月', '二月', '三月', "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+						// var columnValue = new Array();
+						const columnValue = result;
 
-							}
+						// for (var i = 0; i < columName.length; i++) {
+						//
+						//
+						// 	console.info(eval('('
+						// 			+ ("{'name':'" + columName[i]
+						// 					+ "','type':'bar','data':[" + result[i] + "]}")
+						// 			+ ')'))
+						// 	columnValue.push(eval('('
+						// 			+ ("{'name':'" + columName[i]
+						// 					+ "','type':'bar','data':[" + result[i] + "]}")
+						// 			+ ')'));
+						//
+						// }
 
-							console.info(eval('('
-									+ ("{'name':'" + columLabel[i]
-											+ "','type':'bar','data':[" + result[i] + "]}")
-									+ ')'))
-							columnValue.push(eval('('
-									+ ("{'name':'" + columLabel[i]
-											+ "','type':'bar','data':[" + result[i] + "]}")
-									+ ')'));
 
-						}
-
-						buildChart(columLabel, columName, columnValue);
+						buildChart(columName, columnValue);
 
 					},
-					error : function(errorMsg) {
+					error: function (errorMsg) {
 						//请求失败时执行该函数
 						alert("图表请求数据失败!");
 						echart.hideLoading();
@@ -180,6 +250,11 @@
 				});
 
 			}
+		};
+
+		$('.demoTable .layui-btn').on('click', function(){
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
 		});
 
 

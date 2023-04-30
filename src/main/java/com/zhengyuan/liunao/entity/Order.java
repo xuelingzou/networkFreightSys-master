@@ -171,7 +171,7 @@ public class Order {
 
     public void setSubmitTime() throws ParseException {
         Date now = new Date();
-        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.submitTime = tFormat.parse(tFormat.format(now));
     }
 
@@ -191,29 +191,29 @@ public class Order {
         this.receiveTime = receiveTime;
     }
 
-//    为了打印对象方便
-@Override
-public String toString() {
-    return "Order{" +
-            "oid=" + oid +
-            ", ceid='" + ceid + '\'' +
-            ", coid='" + coid + '\'' +
-            ", senderName='" + senderName + '\'' +
-            ", senderPhone='" + senderPhone + '\'' +
-            ", departure='" + departure + '\'' +
-            ", receiveName='" + receiveName + '\'' +
-            ", receivePhone='" + receivePhone + '\'' +
-            ", destination='" + destination + '\'' +
-            ", cargoType='" + cargoType + '\'' +
-            ", weight=" + weight +
-            ", volume=" + volume +
-            ", cost=" + cost +
-            ", state='" + state + '\'' +
-            ", submitTime=" + submitTime +
-            ", sendTime=" + sendTime +
-            ", receiveTime=" + receiveTime +
-            '}';
-}
+    //    为了打印对象方便
+    @Override
+    public String toString() {
+        return "Order{" +
+                "oid=" + oid +
+                ", ceid='" + ceid + '\'' +
+                ", coid='" + coid + '\'' +
+                ", senderName='" + senderName + '\'' +
+                ", senderPhone='" + senderPhone + '\'' +
+                ", departure='" + departure + '\'' +
+                ", receiveName='" + receiveName + '\'' +
+                ", receivePhone='" + receivePhone + '\'' +
+                ", destination='" + destination + '\'' +
+                ", cargoType='" + cargoType + '\'' +
+                ", weight=" + weight +
+                ", volume=" + volume +
+                ", cost=" + cost +
+                ", state='" + state + '\'' +
+                ", submitTime=" + submitTime +
+                ", sendTime=" + sendTime +
+                ", receiveTime=" + receiveTime +
+                '}';
+    }
 
 }
 

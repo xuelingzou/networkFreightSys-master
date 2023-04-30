@@ -29,6 +29,10 @@
         select * from myscoremanage.order
         where coid=#{coid};
     </select>
+    <select id="findOrderByOid" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order
+        where oid=#{oid};
+    </select>
     <select id="findOrderWaitReceive" resultType="com.zhengyuan.liunao.entity.Order">
         elect * from myscoremanage.order
         where coid=#{coid} and state="待接单";

@@ -32,4 +32,5 @@ public interface OrderMapper {
 
     // 管理员界面————展示全部订单
     List<Order> showAllOrder();
+    Order findOrderByOid(int oid);
 }

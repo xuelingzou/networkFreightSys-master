@@ -38,6 +38,6 @@ public interface OrderMapper {
     Order findOrderByOid(@Param("oid")int oid);
 
     // 检索不同货物的承运人账单
-    List<Order> findOrderByCargotype(@Param("cargoType") String cargoType);
+    List<Order> findOrderByCargotype(@Param("cargoType") String cargoType,@Param("coid") String coid);
 
 }

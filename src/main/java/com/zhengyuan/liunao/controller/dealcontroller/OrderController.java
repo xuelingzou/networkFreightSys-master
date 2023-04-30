@@ -19,7 +19,7 @@ import java.util.*;
 
 
 @Controller
-@RequestMapping("/v1")
+@RequestMapping("/Sys")
 public class OrderController {
 
     @Autowired
@@ -108,8 +108,8 @@ public class OrderController {
     // 客户界面————展示自己的全部订单
     @RequestMapping("/findOrderByCeid")
     @ResponseBody
-    public String findOrderByCeid(@RequestParam("ceid") String ceid){
-        //String ceid = (String) httpSession.getAttribute( "account");
+    public String findOrderByCeid(HttpSession httpSession){
+        String ceid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCeid(ceid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -153,8 +153,8 @@ public class OrderController {
     // 货运公司界面————展示自己的全部订单
     @RequestMapping("/findOrderByCoid")
     @ResponseBody
-    public String findOrderByCoid(@RequestParam("coid") String coid){
-        //String coid = (String) httpSession.getAttribute( "account");
+    public String findOrderByCoid(HttpSession httpSession){
+        String coid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCoid(coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -284,7 +284,7 @@ public class OrderController {
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
         // 存入map
         Map<String,String> map = new HashMap<>();
-        map.put("oid",String.valueOf(order.getOid()));
+        //map.put("oid",String.valueOf(order.getOid()));
         map.put("ceid",order.getCeid());
         map.put("coid",order.getCoid());
         map.put("senderName",order.getSenderName());
@@ -323,9 +323,9 @@ public class OrderController {
     // 检索不同货物的承运人账单
     @RequestMapping("/findOrderByCargotype")
     @ResponseBody
-    public String findOrderByCargotype(HttpSession httpSession){
-        String cargoType = (String) httpSession.getAttribute("cargoType");
-        List<Order> orders = orderMapper.findOrderByCargotype(cargoType);
+    public String findOrderByCargotype(@RequestParam("cargoType") String cargoType,HttpSession httpSession){
+        String coid = (String) httpSession.getAttribute("account");
+        List<Order> orders = orderMapper.findOrderByCargotype(cargoType,coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
         // 存入map

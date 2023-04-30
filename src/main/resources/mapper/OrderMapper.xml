@@ -44,6 +44,6 @@
         select * from myscoremanage.order where oid=#{oid};
     </select>
     <select id="findOrderByCargotype" resultType="com.zhengyuan.liunao.entity.Order">
-        select * from myscoremanage.order where cargoType=#{cargoType};
+        select * from myscoremanage.order where cargoType=#{cargoType} and coid=#{coid};
     </select>
 </mapper>

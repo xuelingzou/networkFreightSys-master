@@ -50,10 +50,10 @@ public class ClientInfoController {
 	}
 
 	@ApiOperation("获取客户的信息")
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name="limit",value = "3",required = true),
-//		@ApiImplicitParam(name="page",value = "1",required = true),
-//	})
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="limit",value = "3",required = true),
+		@ApiImplicitParam(name="page",value = "1",required = true),
+	})
 	@RequestMapping(value = "/getClientSimpleInfo")
 	@ResponseBody
 	public Object getClientSimpleInfo(@RequestParam("limit") String limit, @RequestParam("page") String page) {
@@ -85,11 +85,11 @@ public class ClientInfoController {
 	
 	
 	@ApiOperation("根据客户名name获取客户信息")
-//	@ApiImplicitParams({
-//			@ApiImplicitParam(name="key[id]",value = "雪玲",required = true),
-//			@ApiImplicitParam(name="limit",value = "3",required = true),
-//			@ApiImplicitParam(name="page",value = "1",required = true),
-//	})
+	@ApiImplicitParams({
+			@ApiImplicitParam(name="key[id]",value = "雪玲",required = true),
+			@ApiImplicitParam(name="limit",value = "3",required = true),
+			@ApiImplicitParam(name="page",value = "1",required = true),
+	})
 	@ApiResponses({ @ApiResponse(code = 400, message = "请求参数没填好"),
 			@ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对") })
 	@RequestMapping("/getClientByName")
@@ -118,7 +118,7 @@ public class ClientInfoController {
 	}
 
 	@ApiOperation("根据客户id获取客户信息")
-	//@ApiImplicitParam(name="num",value = "20301155",required = true)
+	@ApiImplicitParam(name="num",value = "20301155",required = true)
 	@RequestMapping("/getClientByNum")
 	@ResponseBody
 	public String getClientByNum(@RequestParam("num") String ceid) {

@@ -2,7 +2,7 @@ package com.zhengyuan.liunao.entity;
 
 import io.swagger.annotations.ApiModel;
 
-//@ApiModel(value = "Company",description = "承运商公司")
+@ApiModel(value = "Company",description = "承运商公司")
 public class Company {
 	private String coid;
 	private String coName;

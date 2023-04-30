@@ -2,7 +2,7 @@ package com.zhengyuan.liunao.entity;
 
 import io.swagger.annotations.ApiModel;
 
-//@ApiModel(value = "Admin",description = "管理员")
+@ApiModel(value = "Admin",description = "管理员")
 public class Admin {
 	private String account;
 	private String psw;

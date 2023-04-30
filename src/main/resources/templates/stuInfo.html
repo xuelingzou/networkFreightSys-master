@@ -70,11 +70,11 @@
   </body>
   
   <script type="text/html" id="barDemo">
-    <a title="修改信息 "   onclick="stuModi()" href="javascript:;" lay-event="edit" >
+    <a title="修改信息 "   href="javascript:;" lay-event="edit" >
                 <i class="layui-icon">&#xe642;</i>
               </a>
-              <a title="删除"  onclick="deleteStu(ceid)" href="javascript:;" lay-event="del">
-<!--                  lay-event="edit"-->
+              <a title="删除"  href="javascript:;" lay-event="del">
+
                 <i class="layui-icon">&#xe640;</i>
               </a>
 </script>
@@ -104,11 +104,11 @@
 	    }
           ,cols: [
         	  [
-             {type: 'checkbox',width:documentWidth*4/100} 
-              ,{field:'ceid',title:'客户ID',  sort: true}
+             {type: 'checkbox',width:documentWidth*4/100, fixed: 'left'}
+              ,{field:'ceid',title:'客户ID', sort: true}
               ,{field:'ceName', title:'客户名称'}
               ,{field:'phone', title:'手机号'}
-              ,{field:'operation',title:'操作',toolbar: '#barDemo'}
+              ,{field:'operation',title:'操作',toolbar: '#barDemo',fixed: 'right'}
           ]
         	  ]
           // ,where: {
@@ -155,7 +155,7 @@
               layer.open({
                   type: 2,
                   // data:data,
-                  title: '修改页面（若数据为空，则默认保留原来的值）',
+                  title: '修改客户信息（若数据为空，则默认保留原来的值）',
                   skin: 'layui-layer-molv',
                   shadeClose: false,
                   shade: 0.8,

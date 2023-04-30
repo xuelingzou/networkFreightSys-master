@@ -41,7 +41,7 @@
        
 
  <div class="demoTable" style="margin-bottom: 20px">
-  搜索姓名：
+  搜索承运商名称（模糊查询）：
   <div class="layui-inline">
     <input class="layui-input" name="id" id="demoReload" autocomplete="off">
   </div>
@@ -53,33 +53,38 @@
       </div>
       
       <xblock >
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn layui-btn-danger" onclick="teaDelAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="teaAdd()"><i class="layui-icon"></i>添加</button>
       </xblock>
+
   <table id="test" lay-filter="test"></table>
-    </div>   
+
+    </div>
+
   </body>
-  
+
   <script type="text/html" id="barDemo">
-   <a title="修改信息 "   onclick="teaModi()" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a title="删除"  onclick="deleteStu()" href="javascript:;" lay-event="edit">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-</script>
+      <a title="修改信息 "   href="javascript:;" lay-event="edit" >
+          <i class="layui-icon">&#xe642;</i>
+      </a>
+      <a title="删除"  href="javascript:;" lay-event="del">
+
+          <i class="layui-icon">&#xe640;</i>
+      </a>
+
+  </script>
   
   
   
   <script>
-  var documentWidth = $(document).width();
+
   layui.use('table', function(){
       var table = layui.table;
       table.render({
           elem: '#test'  //绑定table表格
           ,id:'teaInfo'
           ,method:'post'
-          ,url: 'getTeaInfo' //后台springmvc接收路径
+          ,url: 'getCompanySimpleInfo' //后台springmvc接收路径
           ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
   	        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 	      //,curr: 5 //设定初始在第 5 页
@@ -92,21 +97,16 @@
 	    }
           ,cols: [
         	  [
-              {type: 'checkbox', fixed: 'left',width:documentWidth*2/100}
-              ,{field:'teachno',title:'编号', width:documentWidth*8/100, fixed: 'left', sort: true}
-              ,{field:'name', title:'姓名', width:documentWidth*8/100}
-              ,{field:'gra_class', title:'教授班级'}
-              ,{field:'course', title:'教授科目',width:documentWidth*8/100}
-              ,{field:'sex',title:'性别',width:documentWidth*6/100}
-              ,{field:'phone', title:'手机号', width:documentWidth*10/100}
-              ,{field:'qq', title:'qq号', width:documentWidth*10/100}
-              ,{field: 'photo', title: '头像',templet:'<div><img src="../uploads/{{ d.photo}}"></div>',width:documentWidth*6/100}
-              ,{field:'operation',title:'操作',toolbar: '#barDemo',width:documentWidth*7/100}
+              {type: 'checkbox', fixed: 'left'}
+              ,{field:'coid',title:'承运商ID',  fixed: 'left', sort: true}
+              ,{field:'coName', title:'承运商名称'}
+              ,{field:'phone', title:'手机号'}
+              ,{field:'operation',title:'操作',toolbar: '#barDemo',fixed: 'right'}
           ]
         	  ]
       });
-    
-      
+
+      //根据名称查询
 	  var $ = layui.$, active = {
     		    reload: function(){
     		      var demoReload = $('#demoReload');
@@ -114,7 +114,7 @@
     		        page: {
     		          curr: 1 //重新从第 1 页开始
     		        },
-    		    url:'getTeaByName'
+    		    url:'getCompanyByName'
     		        ,where: {
     		          key: {
     		            id: demoReload.val()
@@ -130,52 +130,114 @@
     		    active[type] ? active[type].call(this) : '';
     		  });
 
+
+
+        /**/
+      //工具条事件
+      table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+          var data = obj.data; //获得当前行数据
+          var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+          var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+          var num = data.coid
+          alert(data)
+          if(layEvent === 'del'){ //删除
+              layer.confirm('确定删除吗？', function(index){
+                  // obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                  // layer.close(index);
+
+                  //向服务端发送删除指令
+                  $.ajax({
+                      url:'deleteCompany',
+                      data:{'num':num},
+                      type:'post',
+                      success:function(data){
+                          if(data==="success"){
+                              parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                              window.location.reload(true);
+                          }else{
+                              parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                          }
+                      }
+                  });
+
+              });
+          } else if(layEvent === 'edit'){ //编辑
+
+              //do something
+              layer.open({
+                  type: 2,
+                  title: '修改承运商信息（若数据为空，则默认保留原来的值）',
+                  skin: 'layui-layer-molv',
+                  shadeClose: false,
+                  shade: 0.8,
+                  area:  ['700px', '450px'],
+                  content: 'teaModi?num='+num,
+                  end: function(){
+                      window.location.reload(); //刷新父页面
+                  }
+              });
+
+          }
+      });//工具条事件
+
     		});
 
 
   
   function teaAdd(){
-	  	
   	layer.open(
               {
                   type: 2,
-                  title: '增加页面',
+                  title: '新增承运商',
                   skin: 'layui-layer-lan',
                   shadeClose: false,
                   shade: 0.8,
                   area:  ['700px', '450px'],
                   resize:true,
-                  content:'teaAdd',
+                  content:'companyAdd',
                   end: function(){
                   	window.location.reload(); //刷新父页面
                   }
               });
-  	 
   }
-  
-  
-  function teaModi(){
-	  var num="";
-	  layui.use('table',function(){
-		  var table = layui.table
-		  var checkStatus = table.checkStatus('teaInfo');
-		  num = checkStatus.data[0].teachno;
-	  });
-	  layer.open({
-		  type: 2,
-          title: '修改页面',
-          skin: 'layui-layer-molv',
-          shadeClose: false,
-          shade: 0.8,
-          area:  ['700px', '450px'],
-          content: 'teaModi?num='+num,
-          end: function(){
-          	window.location.reload(); //刷新父页面
+
+
+  function teaDelAll (argument) {
+
+      layui.use('table',function(){
+          var table = layui.table
+          var checkStatus = table.checkStatus('teaInfo');
+          if(checkStatus.data.length===0){
+              parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
+              return ;
           }
-	  });
+          var nums = "";
+          for(var i=0;i<checkStatus.data.length;i++){
+              nums += checkStatus.data[i].coid+",";
+          }
+          parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:5000});
+
+          $.ajax({
+              url:'deleteCompanys',
+              data:{'nums':nums},
+              type:'post',
+              success:function(data){
+                  if(data==="success"){
+                      parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                      location.reload(true);
+                  }else{
+                      parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                  }
+              }
+          });
+
+      });
+
   }
-  
-  
+
+
+
+
   
 </script>  
   

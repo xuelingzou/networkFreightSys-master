@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhengyuan.liunao.repository.OrderMapper">
+
+    <insert id="addOrder">
+        insert into myscoremanage.order (ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume, cost, state, submitTime)
+        values(#{ceid}, #{senderName}, #{senderPhone}, #{departure}, #{receiveName}, #{receivePhone}, #{destination}, #{cargoType}, #{weight}, #{volume}, #{cost}, #{state}, #{submitTime});
+    </insert>
+
+    <update id="updateCoidNState">
+        update myscoremanage.order set coid=#{coid}, state="已接单"
+        where oid=#{oid};
+    </update>
+    <update id="updateSendTNState">
+        update myscoremanage.order set sendTime=#{sendTime}, state="已发货"
+        where oid=#{oid};
+    </update>
+    <update id="updateReceiveTNState">
+        update myscoremanage.order set receiveTime=#{receiveTime}, state="已到达"
+        where oid=#{oid};
+    </update>
+
+    <select id="findOrderByCeid" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order
+        where ceid=#{ceid};
+    </select>
+    <select id="findOrderByCoid" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order
+        where coid=#{coid};
+    </select>
+    <select id="findOrderWaitReceive" resultType="com.zhengyuan.liunao.entity.Order">
+        elect * from myscoremanage.order
+        where coid=#{coid} and state="待接单";
+    </select>
+    <select id="showAllOrder" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order;
+    </select>
+</mapper>

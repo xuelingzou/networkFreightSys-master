@@ -19,15 +19,13 @@
 	src="/Sys/js/jquery-3.3.1.min.js"></script>
 <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="./js/xadmin.js"></script>
-<script type="text/javascript" src = "/Sys/js/jquery.table2excel.js"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  
-  <body>
+<body>
     <div class="x-nav">
       <span class="layui-breadcrumb">
         <a href="">首页</a>
@@ -54,42 +52,56 @@
 
       </div>
       
+      <xblock >
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" onclick="teaAdd()"><i class="layui-icon"></i>添加</button>
+      </xblock>
   <table id="test" lay-filter="test"></table>
     </div>   
   </body>
   
-
+  <script type="text/html" id="barDemo">
+   <a title="修改信息 "   onclick="teaModi()" href="javascript:;">
+                <i class="layui-icon">&#xe642;</i>
+              </a>
+              <a title="删除"  onclick="deleteStu()" href="javascript:;" lay-event="edit">
+                <i class="layui-icon">&#xe640;</i>
+              </a>
+</script>
   
   
   
-  <script >
+  <script>
   var documentWidth = $(document).width();
   layui.use('table', function(){
       var table = layui.table;
       table.render({
           elem: '#test'  //绑定table表格
-          ,id:'stuInfo'
+          ,id:'teaInfo'
           ,method:'post'
-          ,url: 'getStuSimpleInfo' //后台springmvc接收路径
+          ,url: 'getTeaInfo' //后台springmvc接收路径
           ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
   	        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 	      //,curr: 5 //设定初始在第 5 页
 	      ,groups: 1 //只显示 1 个连续页码
 	      ,first: false //不显示首页
 	      ,last: false //不显示尾页
-	      ,limit:3
-	      ,limits:[3,6,9]
+	      ,limit:5
+
+	      ,limits:[5,10,15]
 	    }
           ,cols: [
         	  [
-             {type: 'checkbox'} 
-              ,{field:'stuno',title:'学号',sort: true}
-              ,{field:'name', title:'姓名'}
-              ,{field:'sex',title:'性别'}
-             
-              /* ,{field: 'photo', title: '用户头像',templet:'<a><img src="../uploads/{{d.photo}}"></a>'
-            	  ,edit: 'file'} */
-             
+              {type: 'checkbox', fixed: 'left',width:documentWidth*2/100}
+              ,{field:'teachno',title:'编号', width:documentWidth*8/100, fixed: 'left', sort: true}
+              ,{field:'name', title:'姓名', width:documentWidth*8/100}
+              ,{field:'gra_class', title:'教授班级'}
+              ,{field:'course', title:'教授科目',width:documentWidth*8/100}
+              ,{field:'sex',title:'性别',width:documentWidth*6/100}
+              ,{field:'phone', title:'手机号', width:documentWidth*10/100}
+              ,{field:'qq', title:'qq号', width:documentWidth*10/100}
+              ,{field: 'photo', title: '头像',templet:'<div><img src="../uploads/{{ d.photo}}"></div>',width:documentWidth*6/100}
+              ,{field:'operation',title:'操作',toolbar: '#barDemo',width:documentWidth*7/100}
           ]
         	  ]
       });
@@ -98,11 +110,11 @@
 	  var $ = layui.$, active = {
     		    reload: function(){
     		      var demoReload = $('#demoReload');
-    		      table.reload('stuInfo', {
+    		      table.reload('teaInfo', {
     		        page: {
     		          curr: 1 //重新从第 1 页开始
     		        },
-    		    url:'getClientByName'
+    		    url:'getTeaByName'
     		        ,where: {
     		          key: {
     		            id: demoReload.val()
@@ -115,31 +127,58 @@
     		  
     		  $('.demoTable .layui-btn').on('click', function(){
     		    var type = $(this).data('type');
-    		    // alert($(this).data)
     		    active[type] ? active[type].call(this) : '';
-    		  });	  
-  	     		  
+    		  });
+
     		});
+
+
   
-  function exportTable(){
-	  location.href="/Sys/export";  
+  function teaAdd(){
+	  	
+  	layer.open(
+              {
+                  type: 2,
+                  title: '增加页面',
+                  skin: 'layui-layer-lan',
+                  shadeClose: false,
+                  shade: 0.8,
+                  area:  ['700px', '450px'],
+                  resize:true,
+                  content:'teaAdd',
+                  end: function(){
+                  	window.location.reload(); //刷新父页面
+                  }
+              });
+  	 
   }
   
-
-  layui.use(['form','layer','table','upload'], function(){
-      var table = layui.table
-      ,form = layui.form,upload = layui.upload;
-       var uploadInst = upload.render({
-        elem: '#uploadExcel'
-        , exts: "xls"
-        ,url: '/Sys/ImportStu'
-      });
-
-})
-
-
-
-
+  
+  function teaModi(){
+	  var num="";
+	  layui.use('table',function(){
+		  var table = layui.table
+		  var checkStatus = table.checkStatus('teaInfo');
+		  num = checkStatus.data[0].teachno;
+	  });
+	  layer.open({
+		  type: 2,
+          title: '修改页面',
+          skin: 'layui-layer-molv',
+          shadeClose: false,
+          shade: 0.8,
+          area:  ['700px', '450px'],
+          content: 'teaModi?num='+num,
+          end: function(){
+          	window.location.reload(); //刷新父页面
+          }
+	  });
+  }
+  
+  
+  
 </script>  
   
+  
+
 </html>

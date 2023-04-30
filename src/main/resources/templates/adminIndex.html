@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
 <title>学生成绩管理系统</title>
@@ -23,14 +23,15 @@
 	<!-- 顶部开始 -->
 	<div class="container">
 		<div class="logo">
-			<a href="./index.html"><img border="0" src="/Sys/images/hs.jpg">
+			<a href="./index.html"><img src="/Sys/images/hs.jpg">
 				学生成绩管理系统</a>
 		</div>
 		<div class="left_open">
 			<i title="展开左侧栏" class="iconfont">&#xe699;</i>
 		</div>
-		<ul class="layui-nav right" lay-filter="">
-			<li class="layui-nav-item"><a href="javascript:;">当前用户：<span
+		<ul class="layui-nav right" >
+			<li class="layui-nav-item"><a href="javascript:">当前用户：
+				<span
 					th:text="${session.name}"></span><img
 					th:src="@{/uploads/{filename}(filename=${session.photo})}"
 					th:if="${session.account!='admin'}" /> <img
@@ -56,51 +57,56 @@
 		<div id="side-nav" style="width: 100%; height: 57%">
 			<ul id="nav">
 
-				<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>
+				<li>
+					<a href="javascript:;"> <i class="iconfont">&#xe726;</i>
 						<cite>用户管理</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
+					</a>
 					<ul class="sub-menu">
 						<li><a _href="stuInfo"> <i class="iconfont">&#xe6a7;</i>
-								<cite>已注册学生管理</cite>
+								<cite>已注册客户管理</cite>
 						</a></li>
 
 
 						<li><a _href="teacherInfo"> <i class="iconfont">&#xe6a7;</i>
-								<cite>已注册教师管理</cite>
+								<cite>已注册承运商管理</cite>
 						</a></li>
-					</ul></li>
+					</ul>
+				</li>
 
 
 
 
-				<li><a href="javascript:;"> <i
-						class="iconfont layui-icon-extend-chengji"></i> <cite>接口调试</cite>
-						<i class="iconfont nav_right">&#xe697;</i>
-				</a>
-					<ul class="sub-menu">
-						<li><a _href="http://localhost:8080/swagger-ui.html#/"> <i
-								class="iconfont">&#xe6a7;</i> <cite>学生接口调试</cite>
-						</a></li>
+<!--				<li><a href="javascript:;"> <i-->
+<!--						class="iconfont layui-icon-extend-chengji"></i> <cite>接口调试</cite>-->
+<!--						<i class="iconfont nav_right">&#xe697;</i>-->
+<!--				</a>-->
+<!--					<ul class="sub-menu">-->
+<!--						<li><a _href="http://localhost:8080/swagger-ui.html#/"> <i-->
+<!--								class="iconfont">&#xe6a7;</i> <cite>学生接口调试</cite>-->
+<!--						</a></li>-->
 
 
-						<li><a _href="http://localhost:8080/swagger-ui.html#/"> <i
-								class="iconfont">&#xe6a7;</i> <cite>教师接口调试</cite>
-						</a></li>
+<!--						<li><a _href="http://localhost:8080/swagger-ui.html#/"> <i-->
+<!--								class="iconfont">&#xe6a7;</i> <cite>教师接口调试</cite>-->
+<!--						</a></li>-->
 
-					</ul></li>
+<!--					</ul></li>-->
 
 
 
-				<li><a href="javascript:;"> <i class="iconfont">&#xe6b8;</i>
-						<cite>检查成绩</cite> <i class="iconfont nav_right">&#xe697;</i>
-				</a>
+				<li>
+					<a href="javascript:;"> <i class="iconfont">&#xe6b8;</i>
+						<cite>订单管理</cite> <i class="iconfont nav_right">&#xe697;</i>
+					</a>
 					<ul class="sub-menu">
 						<li><a _href="claCouScore"> <i class="iconfont">&#xe6a7;</i>
-								<cite>班级科目成绩</cite>
+								<cite>订单查询</cite>
 						</a></li>
 					</ul>
 				<li>
+
 			</ul>
+
 		</div>
 		<div
 			style="background-image: url('/Sys/images/bg2.jpg'); width: 100%; height: 43%; bottom: 0; background-repeat: no-repeat;"></div>

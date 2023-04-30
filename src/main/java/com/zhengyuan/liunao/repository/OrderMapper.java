@@ -33,5 +33,11 @@ public interface OrderMapper {
 
     // 管理员界面————展示全部订单
     List<Order> showAllOrder();
+
+    // 通过订单id查找订单
     Order findOrderByOid(@Param("oid")int oid);
+
+    // 检索不同货物的承运人账单
+    List<Order> findOrderByCargotype(@Param("cargoType") String cargoType);
+
 }

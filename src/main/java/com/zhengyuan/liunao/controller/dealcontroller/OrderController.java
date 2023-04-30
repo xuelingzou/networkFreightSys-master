@@ -81,7 +81,7 @@ public class OrderController {
     }
 
     // 货运公司发货
-    @ResponseBody
+    @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/sendCargo")
     public String sendCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -94,7 +94,6 @@ public class OrderController {
     }
 
     // 货运公司送达
-    @ResponseBody
     @PostMapping("/receiveCargo")
     public String receiveCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -274,5 +273,100 @@ public class OrderController {
         Layui l = Layui.data(total,list);
         return JSON.toJSONString(l);
     }
+
+    // 通过订单id查找订单
+    @RequestMapping("/findOrderByOid")
+    @ResponseBody
+    public String findOrderByOid(HttpSession httpSession){
+        int oid = (int) httpSession.getAttribute("oid");
+        Order order = orderMapper.findOrderByOid(oid);
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
+        // 存入map
+        Map<String,String> map = new HashMap<>();
+        map.put("oid",String.valueOf(order.getOid()));
+        map.put("ceid",order.getCeid());
+        map.put("coid",order.getCoid());
+        map.put("senderName",order.getSenderName());
+        map.put("senderPhone",order.getSenderPhone());
+        map.put("departure",order.getDeparture());
+        map.put("receiveName",order.getReceiveName());
+        map.put("receivePhone",order.getReceivePhone());
+        map.put("destination",order.getDestination());
+        map.put("cargoType",order.getCargoType());
+        map.put("weight",String.valueOf(order.getWeight()));
+        map.put("volume",String.valueOf(order.getVolume()));
+        map.put("cost",String.valueOf(order.getCost()));
+        map.put("state",order.getState());
+        if(order.getSubmitTime()!=null){
+            map.put("submitTime",dateformat.format(order.getSubmitTime()));
+        }else{
+            map.put("submitTime","");
+        }
+        if(order.getSendTime()!=null){
+            map.put("sendTime",dateformat.format(order.getSendTime()));
+        }else{
+            map.put("sendTime","");
+        }
+        if(order.getReceiveTime()!=null){
+            map.put("receiveTime",dateformat.format(order.getReceiveTime()));
+        }else{
+            map.put("receiveTime","");
+        }
+        list.add(map);
+
+        int total = list.size();
+        Layui l = Layui.data(total,list);
+        return JSON.toJSONString(l);
+    }
+
+    // 检索不同货物的承运人账单
+    @RequestMapping("/findOrderByCargotype")
+    @ResponseBody
+    public String findOrderByCargotype(HttpSession httpSession){
+        String cargoType = (String) httpSession.getAttribute("cargoType");
+        List<Order> orders = orderMapper.findOrderByCargotype(cargoType);
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
+        // 存入map
+        for(Order order:orders) {
+            Map<String, String> map = new HashMap<>();
+            map.put("oid", String.valueOf(order.getOid()));
+            map.put("ceid", order.getCeid());
+            map.put("coid", order.getCoid());
+            map.put("senderName", order.getSenderName());
+            map.put("senderPhone", order.getSenderPhone());
+            map.put("departure", order.getDeparture());
+            map.put("receiveName", order.getReceiveName());
+            map.put("receivePhone", order.getReceivePhone());
+            map.put("destination", order.getDestination());
+            map.put("cargoType", order.getCargoType());
+            map.put("weight", String.valueOf(order.getWeight()));
+            map.put("volume", String.valueOf(order.getVolume()));
+            map.put("cost", String.valueOf(order.getCost()));
+            map.put("state", order.getState());
+            if (order.getSubmitTime() != null) {
+                map.put("submitTime", dateformat.format(order.getSubmitTime()));
+            } else {
+                map.put("submitTime", "");
+            }
+            if (order.getSendTime() != null) {
+                map.put("sendTime", dateformat.format(order.getSendTime()));
+            } else {
+                map.put("sendTime", "");
+            }
+            if (order.getReceiveTime() != null) {
+                map.put("receiveTime", dateformat.format(order.getReceiveTime()));
+            } else {
+                map.put("receiveTime", "");
+            }
+            list.add(map);
+        }
+
+        int total = list.size();
+        Layui l = Layui.data(total,list);
+        return JSON.toJSONString(l);
+    }
+
 
 }

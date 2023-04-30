@@ -38,10 +38,10 @@ public class FinanceController {
 
 	    double[] scores = new double[12];
 		for(int i=0;i<12;i++){
-			if(map.get(String.valueOf(year*100+i+1))!=null){
+			if(map.get(String.valueOf(year*100+i+1)) !=null){
 				scores[i] = map.get(String.valueOf(year*100+i+1));
-			}else{
-				scores[i] = 0;
+			}else {
+				scores[i] =0;
 			}
 
 		}

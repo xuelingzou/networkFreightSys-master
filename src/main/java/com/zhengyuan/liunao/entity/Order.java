@@ -29,7 +29,7 @@ public class Order {
     double cost;         // 订单花销
     String state;        // 订单状态（待接单/已接单/已到达）
 
-    Date submitTime;      // 提交订单时间
+    Date submitTime;     // 提交订单时间
     Date sendTime;       // 发货时间
     Date receiveTime;    // 到达时间
 
@@ -173,7 +173,7 @@ public class Order {
 
     public void setSubmitTime() throws ParseException {
         Date now = new Date();
-        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.submitTime = tFormat.parse(tFormat.format(now));
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.zhengyuan.liunao.entity.Company;
+//import com.zhengyuan.liunao.entity.Scores;
 
 public interface CompanyService {
 	List<Company> findCompany(String coid, String psw);

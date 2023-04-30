@@ -34,40 +34,32 @@
 
 
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">选择年级：</label>
-				<div class="layui-input-inline layui-form">
-					<select lay-filter="grade">
-						<option value="2016">2016</option>
-						<option value="2017">2017</option>
-						<option value="2018">2018</option>
-					</select>
-				</div>
+<!--			<div class="layui-form-item">-->
+<!--				<label class="layui-form-label">选择年份：</label>-->
+<!--				<div class="layui-input-inline layui-form">-->
+<!--					<select lay-filter="grade">-->
+<!--						<option value="2016">2022</option>-->
+<!--						<option value="2017">2023</option>-->
+<!--					</select>-->
+<!--				</div>-->
 
-				<label class="layui-form-label">选择班级：</label>
-				<div class="layui-input-inline layui-form">
-					<select lay-filter="cla">
-						<option value="01">01</option>
-						<option value="02">02</option>
-						<option value="03">03</option>
-					</select>
-				</div>
+			<label for="test1">选择年份</label><input type="text" id="test1">
+
+			<script src="/Sys/js/lay/modules/laydate.js"></script>
+			<script>
+				//执行一个laydate实例
+				laydate.render({
+					elem: '#test1' //指定元素
+					,type: 'year',
+					done: function(value, date, endDate){
+						console.log(value); //得到日期生成的值，如：2017-08-18
+						console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+						console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+					}
+				});
+			</script>
 
 
-
-				<label class="layui-form-label">选择科目：</label>
-				<div class="layui-input-inline layui-form">
-					<select lay-filter="coursename">
-						<option value="高数">高数</option>
-						<option value="java">java</option>
-						<option value="linux">linux</option>
-						<option value="javaWeb">javaWeb</option>
-						<option value="android">android</option>
-						<option value="数据结构">数据结构</option>
-						<option value="数据库">数据库</option>
-					</select>
-				</div>
-				
 			</div>
 
 			<table id="test" lay-filter="test"></table>

@@ -43,7 +43,6 @@ public class CompanyInfoController {
 		map.put("pagesize", lim);
 		List<Company> allCompany = companyService.findAllCompany(map);
 		int total = companyService.companyCount();
-		
 		Layui l = Layui.data(total, allCompany);
 		return JSON.toJSON(l);
 	}

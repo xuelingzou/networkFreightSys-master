@@ -4,15 +4,11 @@ package com.zhengyuan.liunao.controller.dealcontroller;
 import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
-import com.zhengyuan.liunao.service.impl.OrderServiceImpl;
-import com.zhengyuan.liunao.tools.Id;
 import com.zhengyuan.liunao.tools.Layui;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,7 +76,7 @@ public class OrderController {
         SimpleDateFormat tFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date receiveTime = tFormat.parse(tFormat.format(now));
         // 修改数据库对应数据
-        orderMapper.updateSendTNState(oid, receiveTime);
+        orderMapper.updateReceiveTNState(oid, receiveTime);
         return "货物已送达";
     }
 

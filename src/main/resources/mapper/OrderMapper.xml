@@ -40,4 +40,10 @@
     <select id="showAllOrder" resultType="com.zhengyuan.liunao.entity.Order">
         select * from myscoremanage.order;
     </select>
+    <select id="findOrderOid" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order where oid=#{oid};
+    </select>
+    <select id="findOrderByCargotype" resultType="com.zhengyuan.liunao.entity.Order">
+        select * from myscoremanage.order where cargoType=#{cargoType};
+    </select>
 </mapper>

@@ -115,7 +115,7 @@ public class OrderMapperTest extends TestCase {
 
     @Test
     public void testFindOrderWaitReceive() {
-        List<Order> waitOrder = orderMapper.findOrderWaitReceive("456789");
+        List<Order> waitOrder = orderMapper.findOrderWaitReceive();
         for(int i=0; i<waitOrder.size(); i++){
             assertEquals("待接单", waitOrder.get(i).getState());
         }

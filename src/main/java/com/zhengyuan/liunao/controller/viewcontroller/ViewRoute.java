@@ -10,6 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/Sys")
 public class ViewRoute {
+
+	/*登录相关*/
 	@RequestMapping("/loginView")
 	public String loginView(HttpSession httpSession) {
 		
@@ -25,6 +27,7 @@ public class ViewRoute {
 		return "redirect:/Sys/loginView";
 	}
 
+	/*管理员主页*/
 	@RequestMapping("/adminIndex")
 	public String adminIndex(HttpSession s) {
 		String perssion = s.getAttribute("role").toString();
@@ -34,59 +37,44 @@ public class ViewRoute {
 			return "redirect:/Sys/loginView";
 		}
 	}
+
+	/*管理员查看订单*/
 	@RequestMapping("/adminOrderSearch")
 	public String adminOrderSearch() {
 		return "adminOrderSearch";
 	}
 
+	/*管理员查看客户信息*/
+	@RequestMapping("/clientInfo")
+	public String stuInfo() {
+		return "clientInfo";
+	}
 
+	/*管理员查询承运商信息*/
+	@RequestMapping("/companyInfo")
+	public String teacherInfo() {
+		return "companyInfo";
+	}
+
+
+	/*客户主页*/
 	@RequestMapping("/clientIndex")
 	public String stuIndex() {
 		return "clientIndex";
 	}
 	
-	@RequestMapping("/companyIndex")
-	public String teacherIndex() {
-		return "companyIndex";
-	}
-
-	@RequestMapping("/teacherInfo")
-	public String teacherInfo() {
-		return "teacherInfo";
-	}
-
-	@RequestMapping("/stuInfo")
-	public String stuInfo() {
-		return "stuInfo";
-	}
-	
-	@RequestMapping("/stuInfo_mf")
-	public String stuInfo_mf() {
-		return "stuInfo_mf";
-	}
-	
-
-	@RequestMapping("/parseStu")
-	public String parseStu() {
-		return "parseStu";
-	}
-
-	@RequestMapping("/stuAdd")
+	/*新增客户*/
+	@RequestMapping("/clientAdd")
 	public String StuRegister() {
-		return "stuAdd";
+		return "clientAdd";
 	}
 
-	@RequestMapping("/stuModi")
+	/*客户信息修改*/
+	@RequestMapping("/clientModi")
 	public ModelAndView stuModi(ModelAndView mav, @RequestParam("num") String num) {
 		mav.addObject("num", num);
-		mav.setViewName("stuModi");
+		mav.setViewName("clientModi");
 		return mav;
-	}
-	
-	
-	@RequestMapping("/clientOrderSearch")
-	public String stuScore() {
-		return "clientOrderSearch";
 	}
 
 	/*客户发起新订单*/
@@ -96,79 +84,49 @@ public class ViewRoute {
 	}
 
 
+	/*客户已发订单查询*/
+	@RequestMapping("/clientOrderSearch")
+	public String stuScore() {
+		return "clientOrderSearch";
+	}
+
+	/*承运商主页*/
+	@RequestMapping("/companyIndex")
+	public String teacherIndex() {
+		return "companyIndex";
+	}
+
+	/*新增承运商*/
 	@RequestMapping("/companyAdd")
 	public String teaAdd() {
 		return "companyAdd";
 	}
-	
-	@RequestMapping("/teacherInfo_mf")
-	public String teacherInfo_mf() {
-		return "teacherInfo_mf";
-	}
-	
-	
-	
-	@RequestMapping("/teaModi")
+
+	/*承运商信息修改*/
+	@RequestMapping("/companyModi")
 	public ModelAndView teaModi(ModelAndView mav, @RequestParam("num") String num) {
 		mav.addObject("num", num);
-		mav.setViewName("teaModi");
+		mav.setViewName("companyModi");
 		return mav;
 	}
-	
-	
-	
-	
-	@RequestMapping("/claCouModi")
-	public ModelAndView claCouModi(ModelAndView mav,  @RequestParam("coursename") String coursename,@RequestParam("num") String num) {
-		mav.addObject("num", num);
-		System.out.println(coursename);
-		mav.addObject("coursename", coursename);
-		mav.setViewName("claCouModi");
-		return mav;
-	}
-	
-	/*公司查看待接的订单*/
+
+	/*承运商查看待接订单*/
 	@RequestMapping("/comOrderSearch")
 	public String comOrderSearch() {
 		return "comOrderSearch";
 	}
 
-	/*公司管理已接的订单*/
+	/*承运商管理已接订单*/
 	@RequestMapping("/comOrderManage")
 	public String comOrderManage() {
 		return "comOrderManage";
 	}
 
-	@RequestMapping("/ClaCouSco")
-	public String ClaCouSco() {
-		return "ClaCouSco";
-	}
-
-	@RequestMapping("/ClaCouTea")
-	public String ClaCouTea() {
-		return "ClaCouTea";
-	}
-	
-	@RequestMapping("/incomePie")
-	public String parseClaCouSco() {
-		return "incomePie";
-	}
-	
-
+	/*承运商财务分析*/
 	@RequestMapping("/incomeBar")
 	public String parseClaComp() {
 		return "incomeBar";
 	}
-	
-	@RequestMapping("/welcome")
-	public String welcome() {
-		return "welcome";
-	}
-	
-	@RequestMapping("/announce")
-	public String announce() {
-		return "announce";
-	}
-	
+
 	
 }

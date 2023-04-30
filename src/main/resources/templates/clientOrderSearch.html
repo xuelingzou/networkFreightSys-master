@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.0</title>
+    <title>客户订单查询</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -28,12 +28,6 @@
   </head>
   <body>
     <div class="x-nav">
-      <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
-        <a>
-          <cite>导航元素</cite></a>
-      </span>
       <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">ဂ</i></a>
     </div>
@@ -59,27 +53,26 @@
 	      ,first: false //不显示首页
 	      ,last: false //不显示尾页
 	      ,limit:10
-	      ,limits:[10,20,30]
+	      ,limits:[5,10,20,30]
 	    }
           ,cols: [
         	  [
              {type: 'checkbox',width:documentWidth*4/100,fixed: 'left',}
-              ,{field:'oid',title:'订单ID', sort: true}
-              ,{field:'senderName',title:'发件⼈名', sort:true}
-              ,{field:'senderPhone',title:'发件⼈电话',sort:true}
-              ,{field:'departure',title:'发件地址',sort:true}
-              ,{field:'receiveName',title:'收件⼈名',sort:true}
-                ,{field:'receiveName',title:'收件⼈名',sort:true}
-                ,{field:'receivePhone',title:'收件⼈电话',sort:true}
-                ,{field:'destination',title:'收件地址',sort:true}
-                ,{field:'cargoType',title:'货物种类',sort:true}
-                ,{field:'weight',title:'货物重量',sort:true}
-                ,{field:'volume',title:'货物体积',sort:true}
-                ,{field:'cost',title:'运费',sort:true}
-                ,{field:'state',title:'状态',sort:true}
-                ,{field:'submitTime',title:'提交订单时间',sort:true}
-                ,{field:'sendTime',title:'发货时间',sort:true}
-                ,{field:'receiveTime',title:'到达时间',sort:true}
+              ,{field:'oid',title:'订单ID', sort: true,width: 100,fixed: 'left',}
+              ,{field:'senderName',title:'发件⼈名', sort:true,width: 150}
+              ,{field:'senderPhone',title:'发件⼈电话',sort:true,width: 150}
+              ,{field:'departure',title:'发件地址',sort:true,width: 150}
+              ,{field:'receiveName',title:'收件⼈名',sort:true,width: 150}
+                ,{field:'receivePhone',title:'收件⼈电话',sort:true,width: 150}
+                ,{field:'destination',title:'收件地址',sort:true,width: 150}
+                ,{field:'cargoType',title:'货物种类',sort:true,width: 150}
+                ,{field:'weight',title:'货物重量',sort:true,width: 150}
+                ,{field:'volume',title:'货物体积',sort:true,width: 150}
+                ,{field:'cost',title:'运费',sort:true,width: 150}
+                ,{field:'state',title:'状态',sort:true,width: 150}
+                ,{field:'submitTime',title:'提交订单时间',sort:true,width: 150}
+                ,{field:'sendTime',title:'发货时间',sort:true,width: 150}
+                ,{field:'receiveTime',title:'到达时间',sort:true,width: 150}
 
           ]
         	  ]

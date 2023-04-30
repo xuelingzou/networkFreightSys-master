@@ -21,16 +21,12 @@
 
 <body>
 
-
-
-
 	<div class="x-nav">
-		<span class="layui-breadcrumb"> <a href="">首页</a> <a href="">演示</a>
-			<a> <cite>导航元素</cite></a>
-		</span> <a class="layui-btn layui-btn-small"
+		<a class="layui-btn layui-btn-small"
 			style="line-height: 1.6em; margin-top: 3px; float: right"
 			href="javascript:location.replace(location.href);" title="刷新"> <i
-			class="layui-icon" style="line-height: 30px">ဂ</i></a>
+			class="layui-icon" style="line-height: 30px">ဂ</i>
+		</a>
 	</div>
 
 	<div class="x-body">
@@ -172,19 +168,7 @@
 			// var columnValue = new Array();
 			const columnValue = result;
 
-			// for (var i = 0; i < columName.length; i++) {
-			//
-			//
-			// 	console.info(eval('('
-			// 			+ ("{'name':'" + columName[i]
-			// 					+ "','type':'bar','data':[" + result[i] + "]}")
-			// 			+ ')'))
-			// 	columnValue.push(eval('('
-			// 			+ ("{'name':'" + columName[i]
-			// 					+ "','type':'bar','data':[" + result[i] + "]}")
-			// 			+ ')'));
-			//
-			// }
+
 
 
 			buildChart(columName, columnValue);
@@ -224,20 +208,6 @@
 						// var columnValue = new Array();
 						const columnValue = result;
 
-						// for (var i = 0; i < columName.length; i++) {
-						//
-						//
-						// 	console.info(eval('('
-						// 			+ ("{'name':'" + columName[i]
-						// 					+ "','type':'bar','data':[" + result[i] + "]}")
-						// 			+ ')'))
-						// 	columnValue.push(eval('('
-						// 			+ ("{'name':'" + columName[i]
-						// 					+ "','type':'bar','data':[" + result[i] + "]}")
-						// 			+ ')'));
-						//
-						// }
-
 
 						buildChart(columName, columnValue);
 
@@ -257,55 +227,6 @@
 			active[type] ? active[type].call(this) : '';
 		});
 
-
-
-
-		// form.render();
-		// form.on('select(coursename)', function(data) {
-		// 	coursename = data.value;
-		// 	$.ajax({
-		// 		type : "post",
-		// 		async : true, //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
-		// 		url : "getGscomp", //请求发送到TestServlet处
-		// 		data : {
-		// 			"year":year
-		// 		},
-		// 		dataType : "json", //返回数据形式为json
-		// 		success : function(result) {
-		// 			var columLabel =[ '月收入' ];
-		// 			var columName =  [ '一月', '二月', '三月',"四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
-		// 			var columnValue = new Array();
-		//
-		// 			for (var i = 0; i < columName.length; i++) {
-		// 				for (var j = 0; j < columLabel.length; j++) {
-		//
-		// 				}
-		//
-		// 				console
-		// 						.info(eval('('
-		// 								+ ("{'name':'" + columLabel[i]
-		// 										+ "','type':'bar','data':["
-		// 										+ result[i] + "]}") + ')'))
-		// 				columnValue
-		// 						.push(eval('('
-		// 								+ ("{'name':'" + columLabel[i]
-		// 										+ "','type':'bar','data':["
-		// 										+ result[i] + "]}") + ')'));
-		//
-		// 			}
-		//
-		// 			buildChart(columLabel, columName, columnValue);
-		//
-		// 		},
-		// 		error : function(errorMsg) {
-		// 			//请求失败时执行该函数
-		// 			alert("图表请求数据失败!");
-		// 			echart.hideLoading();
-		// 		}
-		// 	})
-		//
-		// 	echart.setOption(option, true);
-		// });
 
 
 

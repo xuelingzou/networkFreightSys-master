@@ -34,28 +34,26 @@
   </head>
   
   <body>
-    <div class="x-nav">
-      <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
-        <a>
-          <cite>导航元素</cite></a>
-      </span>
-      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-    </div>
+
+
+
+
     <div class="x-body">
 
       <div class="layui-row">
-       
 
- <div class="demoTable" style="margin-bottom: 20px">
-  搜索客户名称（模糊查询）：
-  <div class="layui-inline">
-    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-  </div>
-  <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
-</div>   
+         <div class="demoTable" style="margin-bottom: 20px">
+              搜索客户名称（模糊查询）：
+              <div class="layui-inline">
+                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+              </div>
+              <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
+
+             <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+                 <i class="layui-icon" style="line-height:30px">ဂ</i>
+             </a>
+        </div>
+
 
       </div>
       
@@ -160,7 +158,7 @@
                   shadeClose: false,
                   shade: 0.8,
                   area:  ['700px', '450px'],
-                  content: 'stuModi?num='+num,
+                  content: 'clientModi?num='+num,
                   end: function(){
                       window.location.reload(); //刷新父页面
                   }
@@ -210,7 +208,7 @@
 	  layui.use('table',function(){
 	  var table = layui.table
 	  var checkStatus = table.checkStatus('stuInfo');
-	  if(checkStatus.data.length==0){
+	  if(checkStatus.data.length === 0){
 			parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
 			return ;
 		}
@@ -278,7 +276,7 @@
                     shade: 0.8,
                     area:  ['700px', '450px'],
                     resize:true,
-                    content:'stuAdd',
+                    content:'clientAdd',
                     end: function(){
                     	window.location.reload(); //刷新父页面
                     }
@@ -286,27 +284,7 @@
     	 
     }
   
-  // function stuModi(){
-	//   var num="";
-	//   layui.use('table',function(){
-	// 	  var table = layui.table
-	// 	  var checkStatus = table.checkStatus('stuInfo');
-	// 	  num = checkStatus.data[0].ceid;
-	//   });
-	//   layer.open({
-	// 	  type: 2,
-  //         title: '修改页面',
-  //         skin: 'layui-layer-molv',
-  //         shadeClose: false,
-  //         shade: 0.8,
-  //         area:  ['700px', '450px'],
-  //         content: 'updateClient?num='+num,
-  //         end: function(){
-  //         	window.location.reload(); //刷新父页面
-  //         }
-	//   });
-  // }
-  
+
   
   function screen() {
       //获取当前窗口的宽度
@@ -323,24 +301,6 @@
   }
   
   
-  
-  
-  
-  // function exportTable(){
-	//   location.href="/Sys/export";
-  // }
-  //
-
-//   layui.use(['form','layer','table','upload'], function(){
-//       var table = layui.table
-//       ,form = layui.form,upload = layui.upload;
-//        var uploadInst = upload.render({
-//         elem: '#uploadExcel'
-//         , exts: "xls"
-//         ,url: '/Sys/ImportStu'
-//       });
-//
-// })
 
 
 

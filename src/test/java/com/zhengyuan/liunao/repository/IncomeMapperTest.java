@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class IncomeMapperTest extends TestCase {
 
     @Autowired
-    OrderMapper orderMapper;
+    IncomeMapper incomeMapper;
 
     @Test
     public void testUpdateIncome() {

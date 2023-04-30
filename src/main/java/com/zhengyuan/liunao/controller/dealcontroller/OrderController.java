@@ -49,6 +49,7 @@ public class OrderController {
         // 对数据库的操作
         String ceid = (String) httpSession.getAttribute( "account");
         order.setCeid(ceid); //客户id
+        order.setCost(order.getWeight(),order.getVolume());
         orderMapper.addOrder(order);
         return "提交订单成功";
     }

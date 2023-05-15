@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter{
 	        InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
 	 
 	        //排除配置
-	        addInterceptor.excludePathPatterns("/Sys/loginView","/Sys/dealLogin","/Sys/css/**","/Sys/fonts/**","/Sys/images/**","/Sys/js/**","/Sys/lau/**","/Sys/lib/**");
+	        addInterceptor.excludePathPatterns("/Sys/loginView","/Sys/clientAdd","/Sys/companyAdd","/Sys/dealLogin","/Sys/css/**","/Sys/fonts/**","/Sys/images/**","/Sys/js/**","/Sys/lau/**","/Sys/lib/**");
 	        //拦截配置
 	        addInterceptor.addPathPatterns("/**/**");
 	    }
@@ -43,6 +43,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter{
 	            String url = "/Sys/loginView";
 	            response.sendRedirect(url);
 	            return false;
+
 
 	        }
 	    }

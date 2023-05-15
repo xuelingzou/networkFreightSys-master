@@ -23,7 +23,7 @@ import com.zhengyuan.liunao.service.ClientService;
 import cn.hutool.crypto.SecureUtil;
 
 @Controller
-@RequestMapping("/v1")
+@RequestMapping("/Sys")
 public class LoginResgisterController {
 
 	@Autowired

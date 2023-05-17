@@ -1,5 +1,7 @@
 package com.zhengyuan.liunao.repository;
 
+import cn.hutool.core.date.DateTime;
+import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -8,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -124,5 +128,22 @@ public class OrderMapperTest extends TestCase {
     @Test
     public void testShowAllOrder() {
         assertNotNull(orderMapper.showAllOrder());
+    }
+
+    @Test
+    public void testAddLogistics() {
+        Date now = new Date();
+        Logistics logistics = new Logistics(51,now,"发往沧州");
+        int result = orderMapper.addLogistics(logistics);
+        assertEquals(1,result);
+    }
+
+    @Test
+    public void testShowAllLogisticsByOid() {
+        List<Logistics> result = orderMapper.showAllLogisticsByOid(51);
+        assertEquals(3,result.size());
+        for(int i=0;i< result.size();i++){
+            assertEquals(51,result.get(i).getOid());
+        }
     }
 }

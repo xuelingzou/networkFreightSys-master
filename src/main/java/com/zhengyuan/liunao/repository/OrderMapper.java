@@ -1,5 +1,6 @@
 package com.zhengyuan.liunao.repository;
 
+import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,5 +40,11 @@ public interface OrderMapper {
 
     // 检索不同货物的承运人账单
     List<Order> findOrderByCargotype(@Param("cargoType") String cargoType,@Param("coid") String coid);
+
+    // 承运商添加物流信息
+    int addLogistics(Logistics logistics);
+
+    // 根据oid显示其所有物流信息
+    List<Logistics> showAllLogisticsByOid(@Param("oid")int oid);
 
 }

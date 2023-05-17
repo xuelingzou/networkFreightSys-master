@@ -46,4 +46,12 @@
     <select id="findOrderByCargotype" resultType="com.zhengyuan.liunao.entity.Order">
         select * from myscoremanage.order where cargoType=#{cargoType} and coid=#{coid};
     </select>
+
+    <insert id="addLogistics" parameterType="com.zhengyuan.liunao.entity.Logistics">
+        insert into myscoremanage.logistics (oid, recordTime, location)
+        values(#{oid}, #{recordTime}, #{location});
+    </insert>
+    <select id="showAllLogisticsByOid" resultType="com.zhengyuan.liunao.entity.Logistics">
+        select * from myscoremanage.logistics where oid=#{oid} order by recordTime desc
+    </select>
 </mapper>

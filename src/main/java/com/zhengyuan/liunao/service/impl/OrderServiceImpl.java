@@ -1,7 +1,9 @@
 package com.zhengyuan.liunao.service.impl;
 
+import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +47,16 @@ public class OrderServiceImpl {
         Date receiveTime = tFormat.parse(tFormat.format(now));
         // 修改数据库对应数据
         orderMapper.updateSendTNState(oid, receiveTime);
+    }
+
+    // 承运商添加物流信息
+    int addLogistics(Logistics logistics){
+        // 对数据库的操作
+        return orderMapper.addLogistics(logistics);
+    }
+
+    // 根据oid显示其所有物流信息
+    List<Logistics> showAllLogisticsByOid(int oid){
+        return orderMapper.showAllLogisticsByOid(oid);
     }
 }

@@ -3,6 +3,7 @@ package com.zhengyuan.liunao.controller.dealcontroller;
 
 import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.Income;
+import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
 import com.zhengyuan.liunao.service.IncomeService;
@@ -94,6 +95,7 @@ public class OrderController {
     }
 
     // 货运公司送达
+    @ResponseBody
     @PostMapping("/receiveCargo")
     public String receiveCargo(@RequestParam("oid") int oid) throws ParseException {
         // 获取当前时间
@@ -368,5 +370,38 @@ public class OrderController {
         return JSON.toJSONString(l);
     }
 
+
+    // 承运商记录货物运输信息
+    @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
+    @PostMapping("/addLogistics")
+    public String addLogistics(@RequestParam("oid") int oid,@RequestParam("location") String location){
+        Date now = new Date();
+        Logistics logistics = new Logistics(oid,now,location);
+        if(orderMapper.addLogistics(logistics)>0){
+            return "提交物流状态成功";
+        }else{
+            return "提交物流状态失败";
+        }
+    }
+
+    // 根据oid显示其所有物流信息
+    @RequestMapping("/showAllLogisticsByOid")
+    @ResponseBody
+    public String showAllLogisticsByOid(@RequestParam("oid") int oid){
+        List<Logistics> logistics_list = orderMapper.showAllLogisticsByOid(oid);
+        List<Map<String, String>> list = new ArrayList<>();
+        DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // 存入map
+        for(Logistics logistics:logistics_list) {
+            Map<String, String> map = new HashMap<>();
+            map.put("recordTime", dateformat.format(logistics.getRecordTime()));
+            map.put("location", logistics.getLocation());
+            list.add(map);
+        }
+
+        int total = list.size();
+        Layui l = Layui.data(total,list);
+        return JSON.toJSONString(l);
+    }
 
 }

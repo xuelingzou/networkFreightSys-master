@@ -38,9 +38,10 @@ public class LoginResgisterController {
 
     @ResponseBody
 	@RequestMapping(value = "/dealLogin")
-	public String getInfo(@RequestParam(value = "num") String num, @RequestParam(value = "psw") String psw,
-			@RequestParam(value = "identify") String identify, HttpSession httpSession) {
-
+	public String getInfo(@RequestBody Map<String,String> map, HttpSession httpSession) {
+		String identify = map.get("identify");
+		String num = map.get("num");
+		String psw = map.get("psw");
 		String dataJson = "fail";
 		if (Integer.parseInt(identify) == 0) { //管理员
 			List<Admin> adminList = new ArrayList<>();

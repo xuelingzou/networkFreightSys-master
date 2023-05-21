@@ -63,7 +63,8 @@ public class OrderController {
     // 货运公司接单/发货/送达，更新状态
     @ResponseBody
     @PutMapping("/v1/orders/{oid}/state")
-    public JsonResult<Order> updateOrderState(@PathVariable("oid") int oid, @RequestBody Map<String,String> map, HttpSession httpSession) throws ParseException {
+    public JsonResult<Order> updateOrderState(@PathVariable("oid") String oid1, @RequestBody Map<String,String> map, HttpSession httpSession) throws ParseException {
+        int oid = Integer.parseInt(oid1);
         // 接单
         if(map.get("state").equals("接单")){
             // 获取当前货运公司的coid
@@ -299,8 +300,9 @@ public class OrderController {
     // 通过订单id查找订单
     @GetMapping("/v1/orders/{oid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderByOid(@PathVariable("oid") int oid){
+    public JsonResult<List<Map<String, String>>> findOrderByOid(@PathVariable("oid") String oid1){
         //int oid = (int) httpSession.getAttribute("oid");
+        int oid = Integer.parseInt(oid1);
         Order order = orderMapper.findOrderByOid(oid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -344,7 +346,7 @@ public class OrderController {
     }
 
     // 检索不同货物的承运人账单
-    @GetMapping("/v1/orders/{cargoType}")
+    @GetMapping("/v1/orders/cargoType/{cargoType}")
     @ResponseBody
     public JsonResult<List<Map<String, String>>> findOrderByCargotype(@PathVariable("cargoType") String cargoType,HttpSession httpSession){
         String coid = (String) httpSession.getAttribute("account");
@@ -410,8 +412,8 @@ public class OrderController {
     // 根据oid显示其所有物流信息
     @GetMapping("/v1/logistics/{oid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> showAllLogisticsByOid(@PathVariable("oid") int oid){
-        List<Logistics> logistics_list = orderMapper.showAllLogisticsByOid(oid);
+    public JsonResult<List<Map<String, String>>> showAllLogisticsByOid(@PathVariable("oid") String oid){
+        List<Logistics> logistics_list = orderMapper.showAllLogisticsByOid(Integer.parseInt(oid));
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // 存入map

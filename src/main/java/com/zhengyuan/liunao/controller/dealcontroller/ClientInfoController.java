@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.http.HttpStatus;
+import com.zhengyuan.liunao.tools.JsonResult;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.Client;
@@ -30,11 +29,11 @@ public class ClientInfoController {
 	int mylim;
 	int mystart;
 
-	@RequestMapping(value = "/getClientInfo")
+	@GetMapping(value = "/v1/clients")
 	@ResponseBody
-	public Object getClientInfo(@RequestParam("limit") String limit, @RequestParam("page") String page) {
-		int lim = Integer.parseInt(limit);
-		int start = (Integer.parseInt(page) - 1) * lim;
+	public JsonResult<Object> getClientInfo(@RequestBody Map<String,String> map1) {
+		int lim = Integer.parseInt(map1.get("limit"));
+		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
 		mystart = start;
 		System.out.println(mylim);
@@ -44,9 +43,9 @@ public class ClientInfoController {
 		map.put("pagesize", lim);
 		List<Client> allClient = clientService.findAllClient(map);
 		int total = clientService.ClientCount();
-		System.out.println(total);
-		Layui l = Layui.data(total, allClient);
-		return JSON.toJSON(l);
+//		System.out.println(total);
+//		Layui l = Layui.data(total, allClient);
+		return new JsonResult<>(HttpStatus.HTTP_OK,allClient);
 	}
 
 	@ApiOperation("获取客户的信息")
@@ -54,11 +53,11 @@ public class ClientInfoController {
 		@ApiImplicitParam(name="limit",value = "3",required = true),
 		@ApiImplicitParam(name="page",value = "1",required = true),
 	})
-	@RequestMapping(value = "/getClientSimpleInfo")
+	@GetMapping(value = "/v1/clients/simple")
 	@ResponseBody
-	public Object getClientSimpleInfo(@RequestParam("limit") String limit, @RequestParam("page") String page) {
-		int lim = Integer.parseInt(limit);
-		int start = (Integer.parseInt(page) - 1) * lim;
+	public JsonResult<Object> getClientSimpleInfo(@RequestBody Map<String,String> map1) {
+		int lim = Integer.parseInt(map1.get("limit"));
+		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
 		mystart = start;
 		System.out.println(mylim);
@@ -77,7 +76,8 @@ public class ClientInfoController {
 		int total = clientService.ClientCount();
 		System.out.println(total);
 		Layui l = Layui.data(total, Client);
-		return JSON.toJSON(l);
+		//return JSON.toJSON(l);
+		return new JsonResult<>(HttpStatus.HTTP_OK,Client);
 	}
 	
 	
@@ -92,11 +92,11 @@ public class ClientInfoController {
 	})
 	@ApiResponses({ @ApiResponse(code = 400, message = "请求参数没填好"),
 			@ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对") })
-	@RequestMapping("/getClientByName")
+	@GetMapping("/v1/clients/ceName/{ceName}")
 	@ResponseBody
-	public String getClientByName(@RequestParam("key[id]") String ceName,@RequestParam("limit") String limit, @RequestParam("page") String page) {
-		int lim = Integer.parseInt(limit);
-		int start = (Integer.parseInt(page) - 1) * lim;
+	public JsonResult<Object> getClientByName(@PathVariable("ceName") String ceName, @RequestBody Map<String,String> map1) {
+		int lim = Integer.parseInt(map1.get("limit"));
+		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
 		mystart = start;
 		if (ceName.equals("")) {
@@ -106,48 +106,49 @@ public class ClientInfoController {
 			List<Client> ClientList = clientService.findAllClient(map);
 			int total = clientService.ClientCount();
 			Layui l = Layui.data(total, ClientList);
-			return JSON.toJSONString(l);
+			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		} else {
 			List<Client> ClientList = clientService.findClientByName(ceName, mystart, mylim);
 			int total = ClientList.size();
 			Layui l = Layui.data(total, ClientList);
-			System.out.println(JSON.toJSONString(l));
-			return JSON.toJSONString(l);
+			//System.out.println(JSON.toJSONString(l));
+			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		}
 
 	}
 
 	@ApiOperation("根据客户id获取客户信息")
 	@ApiImplicitParam(name="num",value = "20301155",required = true)
-	@RequestMapping("/getClientByNum")
+	@GetMapping("/v1/clients/ceid/{ceid}")
 	@ResponseBody
-	public String getClientByNum(@RequestParam("num") String ceid) {
+	public JsonResult<Object> getClientByNum(@PathVariable("ceid") String ceid) {
 		List<Client> ClientList = new ArrayList<>();
 		ClientList = clientService.findClientByNum(ceid);
 		int total = ClientList.size();
 		Layui l = Layui.data(total, ClientList);
-		System.out.println("getClientByNum---->" + JSON.toJSONString(l));
-		return JSON.toJSONString(l);
+//		System.out.println("getClientByNum---->" + JSON.toJSONString(l));
+//		return JSON.toJSONString(l);
+		return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 
 	}
 
-	@RequestMapping("/updateClient")
+	@PutMapping("/v1/clients")
 	@ResponseBody
-	public String updateClient(@RequestBody Map<String,String> map) {
+	public JsonResult<Object> updateClient(@RequestBody Map<String,String> map) {
 		System.out.println("Client psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
 		if(clientService.updateClient(map)>0){
-			return "success";
+			return new JsonResult<>(HttpStatus.HTTP_OK,"success");
 		}else{
-			return "fail";
+			return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"fail");
 		}
 
 	}
 	@ApiOperation("多选删除客户信息")
-	@RequestMapping("/deleteClients")
+	@DeleteMapping("/v1/clients")
 	@ResponseBody
-	public String deleteClients(@RequestParam("nums") Object ceid) {
-		String datas = ceid.toString();
+	public JsonResult<Object> deleteClients(@RequestBody Map<String,String> map1) {
+		String datas = map1.get("nums").toString();
 		System.out.println(datas);
 		String[] str = datas.split(",");
 		List<String> data = new ArrayList<String>();
@@ -157,20 +158,20 @@ public class ClientInfoController {
 
 		System.out.println(data.toString());
 		if (clientService.deleteByForeach(data) > 0) {
-			return "success";
+			return new JsonResult<>(HttpStatus.HTTP_NO_CONTENT,"success");
 		} else {
-			return "fail";
+			return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"fail");
 		}
 	}
 
 	@ApiOperation("单选删除一条客户信息")
-	@RequestMapping("/deleteClient")
+	@DeleteMapping("/v1/clients/{ceid}")
 	@ResponseBody
-	public String deleteClient(@RequestParam("num") String ceid) {
+	public JsonResult<Object> deleteClient(@PathVariable("ceid") String ceid) {
 		if (clientService.deleteClient(ceid) > 0) {
-			return "success";
+			return new JsonResult<>(HttpStatus.HTTP_NO_CONTENT,"success");
 		} else {
-			return "fail";
+			return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"fail");
 		}
 	}
 

@@ -6,13 +6,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import cn.hutool.http.HttpStatus;
 import com.zhengyuan.liunao.entity.Client;
+import com.zhengyuan.liunao.entity.Order;
+import com.zhengyuan.liunao.tools.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.alibaba.fastjson.JSON;
 import com.zhengyuan.liunao.entity.Admin;
 import com.zhengyuan.liunao.entity.Company;
@@ -37,7 +37,7 @@ public class LoginResgisterController {
 	
 
     @ResponseBody
-	@RequestMapping(value = "/dealLogin")
+	@PostMapping(value = "/v1/users/login")
 	public String getInfo(@RequestBody Map<String,String> map, HttpSession httpSession) {
 		String identify = map.get("identify");
 		String num = map.get("num");
@@ -68,7 +68,6 @@ public class LoginResgisterController {
 				httpSession.setAttribute("role", "client");
 				dataJson = JSON.toJSONString(clientList);
 
-
 				return dataJson;
 			}
 		} else if (Integer.parseInt(identify) == 1) { //承运商
@@ -82,7 +81,6 @@ public class LoginResgisterController {
 				httpSession.setAttribute("role", "company");
 				dataJson = JSON.toJSONString(companyList);
 
-
 				return dataJson;
 			}
 		}
@@ -90,29 +88,28 @@ public class LoginResgisterController {
 	}
 	
 	
-	@RequestMapping(value = "/registerCompanyDeal")
+	@PostMapping(value = "/v1/companies")
 	@ResponseBody
-	public String registerCompanyDeal(@RequestBody Map<String,String> map) {
+	public JsonResult<Company> registerCompanyDeal(@RequestBody Map<String,String> map) {
 		System.out.println("company psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw")));
 		if (companyService.addCompany(map) > 0) {
-			return "success";
+			return new JsonResult<>(HttpStatus.HTTP_CREATED,"success");
 		}
-
-		return "failure";
+		return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"failure");
 	}
 
 	
-	@RequestMapping(value = "/registerClientDeal")
+	@PostMapping(value = "/v1/clients")
 	@ResponseBody
-	public String registerClientDeal(@RequestBody Map<String,String> map) {
+	public JsonResult<Client> registerClientDeal(@RequestBody Map<String,String> map) {
 		System.out.println("client psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw")));
 		
 		if (clientService.addClient(map) > 0) {
-			return "success";
+			return new JsonResult<>(HttpStatus.HTTP_CREATED,"success");
 		}
-		return "failure";
+		return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"failure");
 	}
 
 }

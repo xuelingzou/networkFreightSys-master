@@ -106,38 +106,48 @@
 				// alert(identify)
 
 				if (identify === '0' || identify === '1' || identify === '2') {
-					$.ajax({
-						url : "dealLogin",
-						data : logindata,
-						type : 'POST',
-						success : function(data) {
-							if (data !== "fail") {
-								// layer.msg("登录成功！！！", function() {
-									if(identify ==='0'){
-										location.href="adminIndex"
-									}else if(identify === '1'){
-										location.href="companyIndex"
-									}else if(identify === '2'){
-										location.href="clientIndex"
-									}	
-								// });//layer.msg
-							} else {
-								layui.use('layer', function() {
-									var layer = layui.layer;
-									layer.open({
-										type : 4,
-										content : [ "账号或者密码或者身份不匹配",
-												"#loginsub" ],
-										shade : 0,
-										tips : [ 2, '#cc0000' ],
-										closeBtn : 0,
-										time : 2000,
+					axios.post(
+							// "http://localhost:8080/Sys/dealLogin",
+							"/Sys/v1/users/login",
+							logindata
+					).then(data => {
+						// console.log(data)
+						//接受数据
+						// let  data = res.data;
+						if (data !== "fail") {
+							layer.msg("登录成功！！！", function() {
 
-									})
-								});
-							}
+								if(identify ==='0'){
+									location.href="/adminIndex"
+									// router.push({path:'/adminIndex',query: {account:data[0].account,name:data[0].name,identify:identify}})
+								}else if(identify === '1'){
+									// router.push({path:'/companyIndex',query: {id:num,name:data[0].coName,identify:identify}})
+
+									location.href="/companyIndex"
+								}else if(identify === '2'){
+									// this.$router.push({path:'/clientIndex',query: {id:num,identify:identify}})
+									// router.push({path:'/clientIndex',query: {id:num,name:data[0].ceName,identify:identify}})
+									location.href="/clientIndex"
+
+								}
+							});//layer.msg
+						} else {
+							layui.use('layer', function() {
+								var layer = layui.layer;
+								layer.open({
+									type : 4,
+									content : [ "账号或者密码或者身份不匹配",
+										"#loginsub" ],
+									shade : 0,
+									tips : [ 2, '#cc0000' ],
+									closeBtn : 0,
+									time : 2000,
+
+								})
+							});
 						}
-					});
+					})
+
 				} else {
 					layui.use('layer', function() {
 						var layer = layui.layer;

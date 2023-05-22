@@ -75,7 +75,7 @@ public class ClientInfoController {
 		}
 		int total = clientService.ClientCount();
 		System.out.println(total);
-		Layui l = Layui.data(total, Client);
+//		Layui l = Layui.data(total, Client);
 		//return JSON.toJSON(l);
 		return new JsonResult<>(HttpStatus.HTTP_OK,Client);
 	}
@@ -105,12 +105,12 @@ public class ClientInfoController {
 			map.put("pagesize", mylim);
 			List<Client> ClientList = clientService.findAllClient(map);
 			int total = clientService.ClientCount();
-			Layui l = Layui.data(total, ClientList);
+//			Layui l = Layui.data(total, ClientList);
 			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		} else {
 			List<Client> ClientList = clientService.findClientByName(ceName, mystart, mylim);
 			int total = ClientList.size();
-			Layui l = Layui.data(total, ClientList);
+//			Layui l = Layui.data(total, ClientList);
 			//System.out.println(JSON.toJSONString(l));
 			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		}
@@ -125,7 +125,7 @@ public class ClientInfoController {
 		List<Client> ClientList = new ArrayList<>();
 		ClientList = clientService.findClientByNum(ceid);
 		int total = ClientList.size();
-		Layui l = Layui.data(total, ClientList);
+//		Layui l = Layui.data(total, ClientList);
 //		System.out.println("getClientByNum---->" + JSON.toJSONString(l));
 //		return JSON.toJSONString(l);
 		return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);

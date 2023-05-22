@@ -8,6 +8,7 @@ import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
 import com.zhengyuan.liunao.service.IncomeService;
+//import com.zhengyuan.liunao.tools.JsonResult;
 import com.zhengyuan.liunao.tools.JsonResult;
 import com.zhengyuan.liunao.tools.Layui;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class OrderController {
 //        Order order = new Order(ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume);
         // 对数据库的操作
         String ceid = (String) httpSession.getAttribute( "account");
+        System.out.println(ceid);
         order.setCeid(ceid); //客户id
         order.setCost(order.getWeight(),order.getVolume());
         if(orderMapper.addOrder(order)>0){
@@ -125,10 +127,13 @@ public class OrderController {
 
 
     // 客户界面————展示自己的全部订单
-    @GetMapping("/v1/orders/ceid")
+    @GetMapping("/v1/orders/ceid/{ceid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderByCeid(HttpSession httpSession){
-        String ceid = (String) httpSession.getAttribute( "account");
+//    public JsonResult<Object> findOrderByCeid(@PathVariable("ceid") String ceid,HttpSession httpSession){
+    public String findOrderByCeid(@PathVariable("ceid") String ceid,HttpSession httpSession){
+
+//        String ceid = (String) httpSession.getAttribute( "account");
+        System.out.println(ceid);
         List<Order> orders = orderMapper.findOrderByCeid(ceid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -164,10 +169,18 @@ public class OrderController {
             }
             list.add(map);
         }
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("code", 0);
+//        map.put("msg", "");
+//        map.put("count",total);
+//        map.put("data",list);
+//        return new JsonResult<>( map);
+
+        int total = list.size();
+//        Layui l = Layui.data(HttpStatus.HTTP_OK,"",total,list);
+        Layui l = Layui.data(Integer.toString(HttpStatus.HTTP_OK) ,total,list);
+        return JSON.toJSONString(l);
+//        return new JsonResult<>(HttpStatus.HTTP_OK,l);
     }
 
     // 货运公司界面————展示自己的全部订单

@@ -31,7 +31,7 @@ public class ClientInfoController {
 
 	@GetMapping(value = "/v1/clients")
 	@ResponseBody
-	public JsonResult<Object> getClientInfo(@RequestBody Map<String,String> map1) {
+	public String getClientInfo(@RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
@@ -43,9 +43,10 @@ public class ClientInfoController {
 		map.put("pagesize", lim);
 		List<Client> allClient = clientService.findAllClient(map);
 		int total = clientService.ClientCount();
-//		System.out.println(total);
-//		Layui l = Layui.data(total, allClient);
-		return new JsonResult<>(HttpStatus.HTTP_OK,allClient);
+		System.out.println(total);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK), total, allClient);
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,allClient);
 	}
 
 	@ApiOperation("获取客户的信息")
@@ -55,7 +56,7 @@ public class ClientInfoController {
 	})
 	@GetMapping(value = "/v1/clients/simple")
 	@ResponseBody
-	public JsonResult<Object> getClientSimpleInfo(@RequestBody Map<String,String> map1) {
+	public String getClientSimpleInfo(@RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
@@ -75,15 +76,13 @@ public class ClientInfoController {
 		}
 		int total = clientService.ClientCount();
 		System.out.println(total);
-//		Layui l = Layui.data(total, Client);
-		//return JSON.toJSON(l);
-		return new JsonResult<>(HttpStatus.HTTP_OK,Client);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK), total, Client);
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,Client);
 	}
 	
 	
-	
-	
-	
+
 	@ApiOperation("根据客户名name获取客户信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name="key[id]",value = "雪玲",required = true),
@@ -94,7 +93,7 @@ public class ClientInfoController {
 			@ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对") })
 	@GetMapping("/v1/clients/ceName/{ceName}")
 	@ResponseBody
-	public JsonResult<Object> getClientByName(@PathVariable("ceName") String ceName, @RequestBody Map<String,String> map1) {
+	public String getClientByName(@PathVariable("ceName") String ceName, @RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		mylim = lim;
@@ -105,14 +104,16 @@ public class ClientInfoController {
 			map.put("pagesize", mylim);
 			List<Client> ClientList = clientService.findAllClient(map);
 			int total = clientService.ClientCount();
-//			Layui l = Layui.data(total, ClientList);
-			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
+			Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, ClientList);
+			return JSON.toJSONString(l);
+			//return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		} else {
 			List<Client> ClientList = clientService.findClientByName(ceName, mystart, mylim);
 			int total = ClientList.size();
-//			Layui l = Layui.data(total, ClientList);
+			Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, ClientList);
 			//System.out.println(JSON.toJSONString(l));
-			return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
+			return JSON.toJSONString(l);
+			//return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 		}
 
 	}
@@ -121,14 +122,14 @@ public class ClientInfoController {
 	@ApiImplicitParam(name="num",value = "20301155",required = true)
 	@GetMapping("/v1/clients/ceid/{ceid}")
 	@ResponseBody
-	public JsonResult<Object> getClientByNum(@PathVariable("ceid") String ceid) {
+	public String getClientByNum(@PathVariable("ceid") String ceid) {
 		List<Client> ClientList = new ArrayList<>();
 		ClientList = clientService.findClientByNum(ceid);
 		int total = ClientList.size();
-//		Layui l = Layui.data(total, ClientList);
-//		System.out.println("getClientByNum---->" + JSON.toJSONString(l));
-//		return JSON.toJSONString(l);
-		return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, ClientList);
+		System.out.println("getClientByNum---->" + JSON.toJSONString(l));
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,ClientList);
 
 	}
 

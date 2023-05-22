@@ -34,7 +34,7 @@ public class CompanyInfoController {
 	
 	@GetMapping(value = "/v1/companies")
 	@ResponseBody
-	public JsonResult<Object> getCompanyInfo(@RequestBody Map<String,String> map1) {
+	public String getCompanyInfo(@RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		Map<String, Object> map = new HashMap<>();
@@ -42,15 +42,15 @@ public class CompanyInfoController {
 		map.put("pagesize", lim);
 		List<Company> allCompany = companyService.findAllCompany(map);
 		int total = companyService.companyCount();
-//		Layui l = Layui.data(total, allCompany);
-//		return JSON.toJSON(l);
-		return new JsonResult<>(HttpStatus.HTTP_OK,allCompany);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, allCompany);
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,allCompany);
 	}
 
 	
 	@GetMapping(value = "/v1/companies/simple")
 	@ResponseBody
-	public JsonResult<Object> getCompanySimpleInfo(@RequestBody Map<String,String> map1) {
+	public String getCompanySimpleInfo(@RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		Map<String, Object> map = new HashMap<>();
@@ -65,10 +65,10 @@ public class CompanyInfoController {
 			company.add(new Company(coid,coName,phone));
 		}
 		int total = companyService.companyCount();
-//		System.out.println(total);
-//		Layui l = Layui.data(total, company);
-//		return JSON.toJSON(l);
-		return new JsonResult<>(HttpStatus.HTTP_OK,company);
+		System.out.println(total);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, company);
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,company);
 	}
 
 
@@ -79,7 +79,7 @@ public class CompanyInfoController {
 
 	@GetMapping("/v1/companies/coName/{coName}")
 	@ResponseBody
-	public JsonResult<Object> getCompanyByName(@PathVariable("coName") String coName, @RequestBody Map<String,String> map1) {
+	public String getCompanyByName(@PathVariable("coName") String coName, @RequestBody Map<String,String> map1) {
 		int lim = Integer.parseInt(map1.get("limit"));
 		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
 		if (coName.equals("")) {
@@ -88,16 +88,16 @@ public class CompanyInfoController {
 			map.put("pagesize", lim);
 			List<Company> companyList = companyService.findAllCompany(map);
 			int total = companyService.companyCount();
-//			Layui l = Layui.data(total, companyList);
-//			return JSON.toJSONString(l);
-			return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
+			Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, companyList);
+			return JSON.toJSONString(l);
+			//return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
 		} else {
 			List<Company> companyList = companyService.findCompanyByName(coName, start, lim);
 			int total = companyList.size();
-//			Layui l = Layui.data(total, companyList);
-//			System.out.println("承运商信息："+JSON.toJSONString(l));
-//			return JSON.toJSONString(l);
-			return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
+			Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, companyList);
+			System.out.println("承运商信息："+JSON.toJSONString(l));
+			return JSON.toJSONString(l);
+			//return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
 		}
 	}
 
@@ -132,16 +132,16 @@ public class CompanyInfoController {
 
 	@GetMapping("/v1/companies/coid/{coid}")
 	@ResponseBody
-	public JsonResult<Object> getCompanyByNum(@PathVariable("coid") String coid) {
+	public String getCompanyByNum(@PathVariable("coid") String coid) {
 		String CompanyNo = coid.toString();
 		List<Company> companyList = new ArrayList<>();
 		companyList = companyService.getCompanyByNum(CompanyNo);
 		int total = companyList.size();
-//		Layui l = Layui.data(total, companyList);
-//		System.out.println(coid);
-//		System.out.println("getCompanyByNum---->" + JSON.toJSONString(l));
-//		return JSON.toJSONString(l);
-		return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
+		Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total, companyList);
+		System.out.println(coid);
+		System.out.println("getCompanyByNum---->" + JSON.toJSONString(l));
+		return JSON.toJSONString(l);
+		//return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
 	}
 
 	@PutMapping("/v1/companies")

@@ -33,8 +33,8 @@ public class OrderController {
 
     // 客户提交订单
     @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
-    @PostMapping("/v1/orders")
-    public JsonResult<Order> submitOrder(@RequestBody Order order, HttpSession httpSession) throws ParseException {
+    @PostMapping("/v1/orders/{ceid}")
+    public JsonResult<Order> submitOrder(@PathVariable("ceid") String ceid, @RequestBody Order order) throws ParseException {
 //        String senderName = map.get("senderName");
 //        String senderPhone = map.get("senderPhone");
 //        String departure = map.get("departure");
@@ -49,7 +49,7 @@ public class OrderController {
 //        // 新建order对象
 //        Order order = new Order(ceid, senderName, senderPhone, departure, receiveName, receivePhone, destination, cargoType, weight, volume);
         // 对数据库的操作
-        String ceid = (String) httpSession.getAttribute( "account");
+        //String ceid = (String) httpSession.getAttribute( "account");
         System.out.println(ceid);
         order.setCeid(ceid); //客户id
         order.setCost(order.getWeight(),order.getVolume());
@@ -65,12 +65,12 @@ public class OrderController {
     // 货运公司接单/发货/送达，更新状态
     @ResponseBody
     @PutMapping("/v1/orders/{oid}/state")
-    public JsonResult<Order> updateOrderState(@PathVariable("oid") String oid1, @RequestBody Map<String,String> map, HttpSession httpSession) throws ParseException {
+    public JsonResult<Order> updateOrderState(@PathVariable("oid") String oid1, @RequestBody Map<String,String> map) throws ParseException {
         int oid = Integer.parseInt(oid1);
         // 接单
         if(map.get("state").equals("接单")){
             // 获取当前货运公司的coid
-            String coid = (String) httpSession.getAttribute( "account");
+            String coid = map.get("coid");
             // 对数据库的操作：更改数据库中该条order的状态，设定关联货运公司
             int num = orderMapper.updateCoidNState(oid, coid);
             if(num==0){
@@ -130,7 +130,7 @@ public class OrderController {
     @GetMapping("/v1/orders/ceid/{ceid}")
     @ResponseBody
 //    public JsonResult<Object> findOrderByCeid(@PathVariable("ceid") String ceid,HttpSession httpSession){
-    public String findOrderByCeid(@PathVariable("ceid") String ceid,HttpSession httpSession){
+    public String findOrderByCeid(@PathVariable("ceid") String ceid){
 
 //        String ceid = (String) httpSession.getAttribute( "account");
         System.out.println(ceid);
@@ -184,10 +184,10 @@ public class OrderController {
     }
 
     // 货运公司界面————展示自己的全部订单
-    @GetMapping("/v1/orders/coid")
+    @GetMapping("/v1/orders/coid/{coid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderByCoid(HttpSession httpSession){
-        String coid = (String) httpSession.getAttribute( "account");
+    public String findOrderByCoid(@PathVariable("coid") String coid){
+        //String coid = (String) httpSession.getAttribute( "account");
         List<Order> orders = orderMapper.findOrderByCoid(coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -223,16 +223,16 @@ public class OrderController {
             }
             list.add(map);
         }
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
     }
 
     // 货运公司界面————展示全部待接单
     @GetMapping("/v1/orders/waiting")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderWaitReceive(){
+    public String findOrderWaitReceive(){
         List<Order> orders = orderMapper.findOrderWaitReceive();
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -258,16 +258,16 @@ public class OrderController {
             }
             list.add(map);
         }
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
     }
 
     // 管理员界面————展示全部订单
     @GetMapping("/v1/orders")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> showAllOrder(){
+    public String showAllOrder(){
         List<Order> orders = orderMapper.showAllOrder();
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -304,16 +304,16 @@ public class OrderController {
             }
             list.add(map);
         }
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
     }
 
     // 通过订单id查找订单
     @GetMapping("/v1/orders/{oid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderByOid(@PathVariable("oid") String oid1){
+    public String findOrderByOid(@PathVariable("oid") String oid1){
         //int oid = (int) httpSession.getAttribute("oid");
         int oid = Integer.parseInt(oid1);
         Order order = orderMapper.findOrderByOid(oid);
@@ -352,17 +352,17 @@ public class OrderController {
         }
         list.add(map);
 
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
     }
 
     // 检索不同货物的承运人账单
     @GetMapping("/v1/orders/cargoType/{cargoType}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> findOrderByCargotype(@PathVariable("cargoType") String cargoType,HttpSession httpSession){
-        String coid = (String) httpSession.getAttribute("account");
+    public String findOrderByCargotype(@PathVariable("cargoType") String cargoType,@RequestBody Map<String,String> map1){
+        String coid = map1.get("coid");
         List<Order> orders = orderMapper.findOrderByCargotype(cargoType,coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -401,10 +401,10 @@ public class OrderController {
             list.add(map);
         }
 
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
     }
 
 
@@ -425,7 +425,7 @@ public class OrderController {
     // 根据oid显示其所有物流信息
     @GetMapping("/v1/logistics/{oid}")
     @ResponseBody
-    public JsonResult<List<Map<String, String>>> showAllLogisticsByOid(@PathVariable("oid") String oid){
+    public String showAllLogisticsByOid(@PathVariable("oid") String oid){
         List<Logistics> logistics_list = orderMapper.showAllLogisticsByOid(Integer.parseInt(oid));
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -437,10 +437,10 @@ public class OrderController {
             list.add(map);
         }
 
-//        int total = list.size();
-//        Layui l = Layui.data(total,list);
-//        return JSON.toJSONString(l);
-        return new JsonResult<>(HttpStatus.HTTP_OK,list);
+        int total = list.size();
+        Layui l = Layui.data(String.valueOf(HttpStatus.HTTP_OK),total,list);
+        return JSON.toJSONString(l);
+        //return new JsonResult<>(HttpStatus.HTTP_OK,list);
     }
 
 }

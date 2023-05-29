@@ -35,7 +35,7 @@ public class LoginResgisterController {
 	@Autowired
 	ClientService clientService;
 	
-
+	/*登录*/
     @ResponseBody
 	@PostMapping(value = "/v1/users/login")
 	public String getInfo(@RequestBody Map<String,String> map, HttpSession httpSession) {
@@ -87,7 +87,7 @@ public class LoginResgisterController {
 		return "fail";
 	}
 	
-	
+	/*承运商注册*/
 	@PostMapping(value = "/v1/companies")
 	@ResponseBody
 	public JsonResult<Company> registerCompanyDeal(@RequestBody Map<String,String> map) {
@@ -99,7 +99,8 @@ public class LoginResgisterController {
 		return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"failure");
 	}
 
-	
+
+	/*客户注册*/
 	@PostMapping(value = "/v1/clients")
 	@ResponseBody
 	public JsonResult<Client> registerClientDeal(@RequestBody Map<String,String> map) {

@@ -31,7 +31,7 @@ public class CompanyInfoController {
 	@Autowired
 	CompanyService companyService;
 
-	
+//	获取承运商列表
 	@GetMapping(value = "/v1/companies")
 	@ResponseBody
 	public String getCompanyInfo(@RequestBody Map<String,String> map1) {
@@ -47,7 +47,7 @@ public class CompanyInfoController {
 		//return new JsonResult<>(HttpStatus.HTTP_OK,allCompany);
 	}
 
-	
+	/*获取承运商列表（除了密码）*/
 	@GetMapping(value = "/v1/companies/simple")
 	@ResponseBody
 	public String getCompanySimpleInfo(@RequestBody Map<String,String> map1) {
@@ -101,6 +101,7 @@ public class CompanyInfoController {
 		}
 	}
 
+	/*删除多个承运商*/
 	@DeleteMapping("/v1/companies")
 	@ResponseBody
 	public JsonResult<Object> deleteCompanys(@RequestBody Map<String,String> map1) {
@@ -120,6 +121,7 @@ public class CompanyInfoController {
 		}
 	}
 
+	/*删除单个承运商*/
 	@DeleteMapping("/v1/companies/{coid}")
 	@ResponseBody
 	public JsonResult<Object> deleteCompany(@PathVariable("coid") String coid) {
@@ -130,6 +132,7 @@ public class CompanyInfoController {
 		}
 	}
 
+	/*使用coid获取对应承运商信息*/
 	@GetMapping("/v1/companies/coid/{coid}")
 	@ResponseBody
 	public String getCompanyByNum(@PathVariable("coid") String coid) {
@@ -144,6 +147,7 @@ public class CompanyInfoController {
 		//return new JsonResult<>(HttpStatus.HTTP_OK,companyList);
 	}
 
+	/*更新承运商信息*/
 	@PutMapping("/v1/companies")
 	@ResponseBody
 	public JsonResult<Object> updateCompany(@RequestBody Map<String,String> map) {

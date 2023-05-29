@@ -56,9 +56,11 @@ public class ClientInfoController {
 	})
 	@GetMapping(value = "/v1/clients/simple")
 	@ResponseBody
-	public String getClientSimpleInfo(@RequestBody Map<String,String> map1) {
-		int lim = Integer.parseInt(map1.get("limit"));
-		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+	public String getClientSimpleInfo(@RequestParam("limit") String limit, @RequestParam("page") String page) {
+//		int lim = Integer.parseInt(map1.get("limit"));
+//		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+		int lim = Integer.parseInt(limit);
+		int start = (Integer.parseInt(page) - 1) * lim;
 		mylim = lim;
 		mystart = start;
 		System.out.println(mylim);
@@ -133,9 +135,11 @@ public class ClientInfoController {
 
 	}
 
+	//	修改客户信息
 	@PutMapping("/v1/clients")
 	@ResponseBody
 	public JsonResult<Object> updateClient(@RequestBody Map<String,String> map) {
+
 		System.out.println("Client psw:"+map.get("psw"));
 		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
 		if(clientService.updateClient(map)>0){
@@ -148,8 +152,9 @@ public class ClientInfoController {
 	@ApiOperation("多选删除客户信息")
 	@DeleteMapping("/v1/clients")
 	@ResponseBody
-	public JsonResult<Object> deleteClients(@RequestBody Map<String,String> map1) {
-		String datas = map1.get("nums").toString();
+//	public JsonResult<Object> deleteClients(@RequestBody Map<String,String> map1) {
+	public JsonResult<Object> deleteClients(@RequestParam("nums") String datas) {
+//		String datas = map1.get("nums").toString();
 		System.out.println(datas);
 		String[] str = datas.split(",");
 		List<String> data = new ArrayList<String>();

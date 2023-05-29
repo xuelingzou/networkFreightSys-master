@@ -35,20 +35,30 @@
 
 
 
-<table id="test" lay-filter="test"></table>
-
-</body>
-<script type="text/html" id="barDemo">
-
+<table id="test" lay-filter="test">
+    <div id ="barDemo">
     {{#  if(d.state ==="已接单"){    }}
     <a class="layui-btn layui-btn-xs" lay-event="send">发货</a>
     {{#   } else if(d.state ==="已发货"){  }}
     <a class="layui-btn layui-btn-xs" lay-event="finish">送达</a>
     {{#    } else if(d.state ==="已到达"){    }}
-        完成
+    完成
     {{#    }   }}
+    </div>
+</table>
 
-</script>
+</body>
+<!--<script type="text/html" id="barDemo">-->
+
+<!--    {{#  if(d.state ==="已接单"){    }}-->
+<!--    <a class="layui-btn layui-btn-xs" lay-event="send">发货</a>-->
+<!--    {{#   } else if(d.state ==="已发货"){  }}-->
+<!--    <a class="layui-btn layui-btn-xs" lay-event="finish">送达</a>-->
+<!--    {{#    } else if(d.state ==="已到达"){    }}-->
+<!--        完成-->
+<!--    {{#    }   }}-->
+
+<!--</script>-->
 
 
 <script >

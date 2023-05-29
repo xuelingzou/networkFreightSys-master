@@ -23,7 +23,8 @@ public class FinanceController {
 	IncomeService incomeService;
 
 	
-	@GetMapping("/v1/incomes")
+//	@GetMapping("/v1/incomes")
+	@PostMapping ("/v1/incomes")
 	@ResponseBody
 	public JsonResult<double[]> getGscomp(HttpSession httpSession, @RequestBody Map<String,String> map1) {
 		String coid = (String) httpSession.getAttribute( "account");

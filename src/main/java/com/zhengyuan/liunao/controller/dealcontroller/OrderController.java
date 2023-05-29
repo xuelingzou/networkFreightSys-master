@@ -64,7 +64,7 @@ public class OrderController {
 
     // 货运公司接单/发货/送达，更新状态
     @ResponseBody
-    @PutMapping("/v1/orders/{oid}/state")
+    @PostMapping("/v1/orders/{oid}/state")
     public JsonResult<Order> updateOrderState(@PathVariable("oid") String oid1, @RequestBody Map<String,String> map) throws ParseException {
         int oid = Integer.parseInt(oid1);
         // 接单

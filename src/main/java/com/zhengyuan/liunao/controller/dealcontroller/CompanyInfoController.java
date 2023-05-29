@@ -50,9 +50,11 @@ public class CompanyInfoController {
 	/*获取承运商列表（除了密码）*/
 	@GetMapping(value = "/v1/companies/simple")
 	@ResponseBody
-	public String getCompanySimpleInfo(@RequestBody Map<String,String> map1) {
-		int lim = Integer.parseInt(map1.get("limit"));
-		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+	public String getCompanySimpleInfo(@RequestParam("limit") String limit, @RequestParam("page") String page) {
+//		int lim = Integer.parseInt(map1.get("limit"));
+//		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+		int lim = Integer.parseInt(limit);
+		int start = (Integer.parseInt(page) - 1) * lim;
 		Map<String, Object> map = new HashMap<>();
 		map.put("start", start);
 		map.put("pagesize", lim);
@@ -104,8 +106,8 @@ public class CompanyInfoController {
 	/*删除多个承运商*/
 	@DeleteMapping("/v1/companies")
 	@ResponseBody
-	public JsonResult<Object> deleteCompanys(@RequestBody Map<String,String> map1) {
-		String datas = map1.get("nums").toString();
+	public JsonResult<Object> deleteCompanys(@RequestParam("nums") String datas) {
+		//String datas = map1.get("nums").toString();
 		System.out.println(datas);
 		String[] str = datas.split(",");
 		List<String> data = new ArrayList<String>();
@@ -150,9 +152,26 @@ public class CompanyInfoController {
 	/*更新承运商信息*/
 	@PutMapping("/v1/companies")
 	@ResponseBody
-	public JsonResult<Object> updateCompany(@RequestBody Map<String,String> map) {
-		System.out.println("Company psw:"+map.get("psw"));
-		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+	public JsonResult<Object> updateCompany(@RequestParam("coid")String coid, @RequestParam("coName")String coName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
+//		System.out.println("Company psw:"+map.get("psw"));
+//		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+		Map<String, String> map = new HashMap<>();
+		if(!coid.equals("")){
+			map.put("ceid",coid);
+		}
+		if(!coName.equals("")){
+			map.put("ceName",coName);
+		}
+		if(!psw.equals("")){
+			map.put("psw", SecureUtil.md5(psw.toString()));
+		}
+		if(!phone.equals("")){
+			map.put("phone",phone);
+		}
+		if(oldNum.equals("")){
+			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
+		}
+		map.put("oldNum",oldNum);
 		if(companyService.updateCompany(map)>0){
 			return new JsonResult<>(HttpStatus.HTTP_OK,"success");
 		}else{

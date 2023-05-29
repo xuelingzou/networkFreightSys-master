@@ -55,7 +55,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public int updateClient(Map<String,String> map) {
+	public int updateClient(Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return clientMapper.updateClient(map);
 	}

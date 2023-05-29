@@ -114,6 +114,11 @@ public class ClientMapperTest extends TestCase {
         map.put("ceName","雪玲sherlock");
         map.put("psw", SecureUtil.md5("123456"));
         map.put("phone","13579220022");
+//        String oldNum = "20301155";
+//        String ceName = "雪玲sherlock";
+//        String psw = SecureUtil.md5("123456");
+//        String phone = "13579220022";
+//        String ceid = "";
         int num = clientMapper.updateClient(map);
         assertEquals(1,num);
 

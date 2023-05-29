@@ -138,10 +138,25 @@ public class ClientInfoController {
 	//	修改客户信息
 	@PutMapping("/v1/clients")
 	@ResponseBody
-	public JsonResult<Object> updateClient(@RequestBody Map<String,String> map) {
-
-		System.out.println("Client psw:"+map.get("psw"));
-		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+	public JsonResult<Object> updateClient(@RequestParam("ceid")String ceid, @RequestParam("ceName")String ceName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
+		Map<String, String> map = new HashMap<>();
+		if(!ceid.equals("")){
+			map.put("ceid",ceid);
+		}
+		if(!ceName.equals("")){
+			map.put("ceName",ceName);
+		}
+		if(!psw.equals("")){
+			map.put("psw", SecureUtil.md5(psw.toString()));
+		}
+		if(!phone.equals("")){
+			map.put("phone",phone);
+		}
+		if(oldNum.equals("")){
+			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
+		}
+		map.put("oldNum",oldNum);
+		//String psw1 = SecureUtil.md5(psw);
 		if(clientService.updateClient(map)>0){
 			return new JsonResult<>(HttpStatus.HTTP_OK,"success");
 		}else{

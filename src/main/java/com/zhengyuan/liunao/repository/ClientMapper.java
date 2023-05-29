@@ -20,7 +20,7 @@ public interface ClientMapper {
 	
 	List<Client> findClientByNum(String ceid);
 
-	int updateClient(Map<String,String> map);
+	int updateClient(Map<String, String> map);
 	int deleteByForeach(List<String> ceid);
 
 	int deleteClient(String ceid);

@@ -361,8 +361,8 @@ public class OrderController {
     // 检索不同货物的承运人账单
     @GetMapping("/v1/orders/cargoType/{cargoType}")
     @ResponseBody
-    public String findOrderByCargotype(@PathVariable("cargoType") String cargoType,@RequestBody Map<String,String> map1){
-        String coid = map1.get("coid");
+    public String findOrderByCargotype(@PathVariable("cargoType") String cargoType,@RequestParam("coid")String coid){
+        //String coid = map1.get("coid");
         List<Order> orders = orderMapper.findOrderByCargotype(cargoType,coid);
         List<Map<String, String>> list = new ArrayList<>();
         DateFormat dateformat= new SimpleDateFormat("yyyy-MM-dd");
@@ -411,10 +411,10 @@ public class OrderController {
     // 承运商记录货物运输信息
     @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/v1/logistics")
-    public JsonResult<Logistics> addLogistics(@RequestBody Map<String,String> map){
-        int oid = Integer.parseInt(map.get("oid"));
+    public JsonResult<Logistics> addLogistics(@RequestParam("oid")String oid1,@RequestParam("location")String location){
+        int oid = Integer.parseInt(oid1);
         Date now = new Date();
-        Logistics logistics = new Logistics(oid,now,map.get("location"));
+        Logistics logistics = new Logistics(oid,now,location);
         if(orderMapper.addLogistics(logistics)>0){
             return new JsonResult<>(HttpStatus.HTTP_CREATED,"提交物流状态成功");
         }else{

@@ -29,6 +29,7 @@ public class ClientInfoController {
 	int mylim;
 	int mystart;
 
+	/*不能用、暂时也用不上*/
 	@GetMapping(value = "/v1/clients")
 	@ResponseBody
 	public String getClientInfo(@RequestBody Map<String,String> map1) {
@@ -95,12 +96,14 @@ public class ClientInfoController {
 			@ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对") })
 	@GetMapping("/v1/clients/ceName/{ceName}")
 	@ResponseBody
-	public String getClientByName(@PathVariable("ceName") String ceName, @RequestBody Map<String,String> map1) {
-		int lim = Integer.parseInt(map1.get("limit"));
-		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+	public String getClientByName(@PathVariable("ceName") String ceName, @RequestParam("limit") String limit, @RequestParam("page") String page) {
+//		int lim = Integer.parseInt(map1.get("limit"));
+//		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+		int lim = Integer.parseInt(limit);
+		int start = (Integer.parseInt(page) - 1) * lim;
 		mylim = lim;
 		mystart = start;
-		if (ceName.equals("")) {
+		if (ceName.equals(" ")) { //注意不是null，是一个空格
 			Map<String, Object> map = new HashMap<>();
 			map.put("start", mystart);
 			map.put("pagesize", mylim);
@@ -138,24 +141,29 @@ public class ClientInfoController {
 	//	修改客户信息
 	@PutMapping("/v1/clients")
 	@ResponseBody
-	public JsonResult<Object> updateClient(@RequestParam("ceid")String ceid, @RequestParam("ceName")String ceName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
-		Map<String, String> map = new HashMap<>();
-		if(!ceid.equals("")){
-			map.put("ceid",ceid);
-		}
-		if(!ceName.equals("")){
-			map.put("ceName",ceName);
-		}
-		if(!psw.equals("")){
-			map.put("psw", SecureUtil.md5(psw.toString()));
-		}
-		if(!phone.equals("")){
-			map.put("phone",phone);
-		}
-		if(oldNum.equals("")){
-			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
-		}
-		map.put("oldNum",oldNum);
+//	public JsonResult<Object> updateClient(@RequestParam("ceid")String ceid, @RequestParam("ceName")String ceName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
+	public JsonResult<Object> updateClient(@RequestBody Map<String,String> map) {
+//		String ceid = map.get("ceid");
+//		System.out.println(ceid);
+
+//	public JsonResult<Object> updateClient(@PathVariable("ceid")String ceid, @PathVariable("ceName")String ceName, @PathVariable("psw")String psw, @PathVariable("phone")String phone, @PathVariable("oldNum")String oldNum) {
+//		Map<String, String> map = new HashMap<>();
+//		if(!ceid.equals("")){
+//			map.put("ceid",ceid);
+//		}
+//		if(!ceName.equals("")){
+//			map.put("ceName",ceName);
+//		}
+//		if(!psw.equals("")){
+//			map.put("psw", SecureUtil.md5(psw.toString()));
+//		}
+//		if(!phone.equals("")){
+//			map.put("phone",phone);
+//		}
+//		if(oldNum.equals("")){
+//			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
+//		}
+//		map.put("oldNum",oldNum);
 		//String psw1 = SecureUtil.md5(psw);
 		if(clientService.updateClient(map)>0){
 			return new JsonResult<>(HttpStatus.HTTP_OK,"success");

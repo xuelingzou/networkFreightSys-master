@@ -74,16 +74,18 @@ public class CompanyInfoController {
 	}
 
 
-	@ApiOperation("获取承运商公司的信息")
+	@ApiOperation("根据名称获取承运商公司的信息")
 	
 	@ApiResponses({ @ApiResponse(code = 400, message = "请求参数没填好"),
 			@ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对") })
 
 	@GetMapping("/v1/companies/coName/{coName}")
 	@ResponseBody
-	public String getCompanyByName(@PathVariable("coName") String coName, @RequestBody Map<String,String> map1) {
-		int lim = Integer.parseInt(map1.get("limit"));
-		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+	public String getCompanyByName(@PathVariable("coName") String coName, @RequestParam("limit") String limit, @RequestParam("page") String page) {
+//		int lim = Integer.parseInt(map1.get("limit"));
+//		int start = (Integer.parseInt(map1.get("page")) - 1) * lim;
+		int lim = Integer.parseInt(limit);
+		int start = (Integer.parseInt(page) - 1) * lim;
 		if (coName.equals("")) {
 			Map<String, Object> map = new HashMap<>();
 			map.put("start", start);
@@ -152,26 +154,29 @@ public class CompanyInfoController {
 	/*更新承运商信息*/
 	@PutMapping("/v1/companies")
 	@ResponseBody
-	public JsonResult<Object> updateCompany(@RequestParam("coid")String coid, @RequestParam("coName")String coName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
-//		System.out.println("Company psw:"+map.get("psw"));
+//	public JsonResult<Object> updateCompany(@RequestParam("coid")String coid, @RequestParam("coName")String coName, @RequestParam("psw")String psw, @RequestParam("phone")String phone, @RequestParam("oldNum")String oldNum) {
+	public JsonResult<Object> updateCompany(@RequestBody Map<String,String> map) {//		System.out.println("Company psw:"+map.get("psw"));
 //		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
-		Map<String, String> map = new HashMap<>();
-		if(!coid.equals("")){
-			map.put("ceid",coid);
-		}
-		if(!coName.equals("")){
-			map.put("ceName",coName);
-		}
-		if(!psw.equals("")){
-			map.put("psw", SecureUtil.md5(psw.toString()));
-		}
-		if(!phone.equals("")){
-			map.put("phone",phone);
-		}
-		if(oldNum.equals("")){
-			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
-		}
-		map.put("oldNum",oldNum);
+//		Map<String, String> map = new HashMap<>();
+//		if(!coid.equals("")){
+//			map.put("coid",coid);
+//		}
+//		if(!coName.equals("")){
+//			map.put("coName",coName);
+//		}
+//		if(!psw.equals("")){
+//			map.put("psw", SecureUtil.md5(psw.toString()));
+//		}
+//		if(!phone.equals("")){
+//			map.put("phone",phone);
+//		}
+//		if(oldNum.equals("")){
+//			return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数oldNum不合法");
+//		}
+//		map.put("oldNum",oldNum);
+
+
+
 		if(companyService.updateCompany(map)>0){
 			return new JsonResult<>(HttpStatus.HTTP_OK,"success");
 		}else{

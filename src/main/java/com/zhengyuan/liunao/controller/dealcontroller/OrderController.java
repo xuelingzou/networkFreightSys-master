@@ -3,10 +3,12 @@ package com.zhengyuan.liunao.controller.dealcontroller;
 
 import cn.hutool.http.HttpStatus;
 import com.alibaba.fastjson.JSON;
+import com.zhengyuan.liunao.entity.Company;
 import com.zhengyuan.liunao.entity.Income;
 import com.zhengyuan.liunao.entity.Logistics;
 import com.zhengyuan.liunao.entity.Order;
 import com.zhengyuan.liunao.repository.OrderMapper;
+import com.zhengyuan.liunao.service.CompanyService;
 import com.zhengyuan.liunao.service.IncomeService;
 //import com.zhengyuan.liunao.tools.JsonResult;
 import com.zhengyuan.liunao.tools.JsonResult;
@@ -31,6 +33,8 @@ public class OrderController {
     @Autowired
     private IncomeService incomeService;
 
+    @Autowired
+    CompanyService companyService;
     // 客户提交订单
     @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/v1/orders/{ceid}")
@@ -67,10 +71,11 @@ public class OrderController {
     @PostMapping("/v1/orders/{oid}/state")
     public JsonResult<Order> updateOrderState(@PathVariable("oid") String oid1, @RequestBody Map<String,String> map) throws ParseException {
         int oid = Integer.parseInt(oid1);
+        String coid = map.get("coid");
         // 接单
         if(map.get("state").equals("接单")){
             // 获取当前货运公司的coid
-            String coid = map.get("coid");
+//            String coid = map.get("coid");
             // 对数据库的操作：更改数据库中该条order的状态，设定关联货运公司
             int num = orderMapper.updateCoidNState(oid, coid);
             if(num==0){
@@ -94,7 +99,20 @@ public class OrderController {
                 return new JsonResult<>(HttpStatus.HTTP_INTERNAL_ERROR,"更新状态失败");
             }
             Order order = orderMapper.findOrderByOid(oid);
+
+            /*更新物流信息*/
+            //获取承运商名称
+            List<Company> companyList =  companyService.getCompanyByNum(coid);
+            Company company = companyList.get(0);
+            String coName = company.getCoName();
+
+            Date now = new Date();
+            String location = "承运商"+coName+"已接单";
+            Logistics logistics = new Logistics(oid,now,location);
+            orderMapper.addLogistics(logistics); //更新物流信息
+
             return new JsonResult<>(HttpStatus.HTTP_OK,"接单成功",order);
+
         }else if(map.get("state").equals("发货")){
             // 获取当前时间
             Date now = new Date();
@@ -106,6 +124,18 @@ public class OrderController {
                 return new JsonResult<>(HttpStatus.HTTP_NOT_FOUND,"未找到该订单");
             }
             Order order = orderMapper.findOrderByOid(oid);
+
+            /*更新物流信息*/
+            //获取承运商名称
+            List<Company> companyList =  companyService.getCompanyByNum(coid);
+            Company company = companyList.get(0);
+            String coName = company.getCoName();
+
+            String location = "承运商"+coName+"已发货";
+            Logistics logistics = new Logistics(oid,now,location);
+            orderMapper.addLogistics(logistics); //更新物流信息
+
+
             return new JsonResult<>(HttpStatus.HTTP_OK,"发货成功",order);
         }else if(map.get("state").equals("送达")){
             // 获取当前时间
@@ -118,6 +148,14 @@ public class OrderController {
                 return new JsonResult<>(HttpStatus.HTTP_NOT_FOUND,"未找到该订单");
             }
             Order order = orderMapper.findOrderByOid(oid);
+
+            /*更新物流信息*/
+            String location = "货物已送达";
+            Logistics logistics = new Logistics(oid,now,location);
+            orderMapper.addLogistics(logistics); //更新物流信息
+
+
+
             return new JsonResult<>(HttpStatus.HTTP_OK,"货物已送达",order);
         }else{
             return new JsonResult<>(HttpStatus.HTTP_BAD_REQUEST,"参数state不合法");
@@ -411,7 +449,10 @@ public class OrderController {
     // 承运商记录货物运输信息
     @ResponseBody //加这个注解，则直接返回数据，而不是模板路径
     @PostMapping("/v1/logistics")
-    public JsonResult<Logistics> addLogistics(@RequestParam("oid")String oid1,@RequestParam("location")String location){
+//    public JsonResult<Logistics> addLogistics(@RequestParam("oid")String oid1,@RequestParam("location")String location){
+    public JsonResult<Logistics> addLogistics(@RequestBody Map<String,String> map1){
+        String oid1 = map1.get("oid");
+        String location = map1.get("location");
         int oid = Integer.parseInt(oid1);
         Date now = new Date();
         Logistics logistics = new Logistics(oid,now,location);
